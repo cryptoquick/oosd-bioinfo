@@ -5,7 +5,7 @@
 
 class NeedlemanWunsch {
 public:
-	void align();
+	void Compare();
 }
 
 #endif
