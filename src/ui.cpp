@@ -4,9 +4,6 @@
 #include <iostream>
 #include <stdio.h>
 
-//This file gets all the files in the folder.
-#include <windows.h>
-
 //These three inclusions are for conversion of other variables to string
 #include <sstream>
 #include <string>

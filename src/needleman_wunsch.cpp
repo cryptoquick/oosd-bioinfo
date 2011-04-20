@@ -1,4 +1,3 @@
-class NeedlemanWunsch {
-public:
-	void align();
+NeedlemanWunsch::Compare (&seq1, &seq2) {
+	
 }
