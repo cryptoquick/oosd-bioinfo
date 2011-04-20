@@ -22,7 +22,7 @@ using namespace std;
 	char *file2;
 
 	vector<string> FastaSequencesDirectory;
-
+/* // Working on this for Linux support.
 void LoadAllFastaFiles()
 {
 	//This is a method that stores all the Fasta Sequences in the folder so its easier to keep track of them.
@@ -47,7 +47,7 @@ void LoadAllFastaFiles()
 	
 
 }
-
+*//*
 void PrintAllFastaFiles()
 {
 	cout<<endl;
@@ -56,7 +56,7 @@ void PrintAllFastaFiles()
 		cout<< FastaSequencesDirectory.at(i) << endl;
 	}
 }
-
+*/
 void MainMenu()
 {
 		cout<<endl;
@@ -147,7 +147,7 @@ void Open()
 	//LoadAllFastaFiles();
 
 	//Leave out for now till I can find a way to get the Fasta Files into a database.
-	PrintAllFastaFiles();
+	//PrintAllFastaFiles();
 	cout<<endl;
 
 	cout<<"\nEnter the first sequence you want to compare"<<endl;
@@ -167,25 +167,13 @@ void Open()
 
 	//Now using the sequencer methods with the data.
 
-		if(find(FastaSequencesDirectory.begin(), FastaSequencesDirectory.end(), sc.str()) !=FastaSequencesDirectory.end())
+	/*	if(find(FastaSequencesDirectory.begin(), FastaSequencesDirectory.end(), sc.str()) !=FastaSequencesDirectory.end())
 		{
 			if(find(FastaSequencesDirectory.begin(), FastaSequencesDirectory.end(), sd.str()) !=FastaSequencesDirectory.end())
 			{
 
 
-				//Create two new Sequence objects
-				seq = new Sequence(file1);
-				seq2 = new Sequence(file2);
 
-					SequencesImported = true;
-
-					cout<<endl;
-					cout<<"Your Sequences have been entered returning to main menu."<<endl;
-					cout<<endl;
-
-					MainMenu();
-
-					return;
 			}
 			else
 			{
@@ -202,10 +190,22 @@ void Open()
 			cout<<"The first sequence you entered isn't valid"<<endl;
 			cout<<"Please try a more valid one, thanks."<<endl;
 			cout<<endl;
-		}
+		}*/
 
+		//Create two new Sequence objects
+		seq = new Sequence(file1);
+		seq2 = new Sequence(file2);
+
+		SequencesImported = true;
+
+		cout<<endl;
+		cout<<"Your Sequences have been entered returning to main menu."<<endl;
+		cout<<endl;
+
+		MainMenu();
+
+		return;
 	}//end of while loop
-
 }
 
 void Quit()
@@ -248,7 +248,7 @@ void Options()
 
 void start()
 {
-	LoadAllFastaFiles();
+//	LoadAllFastaFiles();
 
 	cout<<"Welcome to the DNA Sequencer Program"<<endl;
 	MainMenu();
