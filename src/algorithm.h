@@ -3,6 +3,15 @@
 
 #include "seq.h"
 
+class Algorithm ()
+{
+private:
+	string type;
 
+public:
+	Algorithm (string type) { }
+	
+	void run();
+}
 
 #endif

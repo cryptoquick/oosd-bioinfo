@@ -3,13 +3,9 @@
 
 #include "algorithm.h"
 
-class Algorithm ()
-{
-private:
-	string type;
-
+class NeedlemanWunsch {
 public:
-	Algorithm (string type) { }
-	
-	void run();
+	void align();
 }
+
+#endif
