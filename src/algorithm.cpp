@@ -4,6 +4,6 @@ Algorithm::Algorithm (string type) {
 	this.type = type;
 }
 
-Algorithm::run () {
+Algorithm::Run () {
 	
 }
