@@ -1,7 +1,13 @@
 #include "file.h"
+#include "seq.h"
+#include <iostream>
+#include <fstream>
+#include <string>
+#include<stdio.h>
 
-File:File(char* p) { 
-		path = p; load() 
+File::File(char* p) { 
+		path = p; 
+		load();
 }
 
 void File::load() {
@@ -23,6 +29,19 @@ void File::load() {
 	}
 
 	input.close();
+
 	data = output;
+}
+
+string File::getSequence()
+{	
+	return data;
+}
+
+//void File::data
+
+void File::printOut()
+{
+	cout<<data<<endl;
 }
 
