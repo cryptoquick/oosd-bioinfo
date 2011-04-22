@@ -1,6 +1,4 @@
-OBJS = 
-
-bioinfo : src/main.o src/ui.o src/file.o src/seq.o
+bioinfo: src/main.o src/ui.o src/file.o src/seq.o
 	g++ -o bioinfo src/main.o src/ui.o src/file.o src/seq.o
 
 main.o: src/main.cpp
