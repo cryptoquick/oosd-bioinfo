@@ -1,63 +1,74 @@
-#include "file.h"
-#include "seq.h"
+//Class Header Inclusion
 #include "ui.h"
+
+//Testing inclusions
 #include <iostream>
-#include <stdio.h>
+#include <exception>
 
 //These three inclusions are for conversion of other variables to string
 #include <sstream>
 #include <string>
 #include <algorithm>
 
+//Don't need this except for testing
+//#include <stdio.h>
 
 using namespace std;
 
-
-	static bool SequencesImported = false;
-				
-	Sequence * seq;
-	Sequence * seq2;
-
-	char *file1;
-	char *file2;
-
-	vector<string> FastaSequencesDirectory;
-/* // Working on this for Linux support.
-void LoadAllFastaFiles()
-{
-	//This is a method that stores all the Fasta Sequences in the folder so its easier to keep track of them.
-	//Please store all your Fasta Files in the 'Dna_Sequences' Folder. Thanks.
-	WIN32_FIND_DATA search_data;
-	
-	memset(&search_data, 0, sizeof(WIN32_FIND_DATA));
-	HANDLE handle = FindFirstFile("Dna_Sequences\\*.fasta", &search_data);
-
-	while(handle != INVALID_HANDLE_VALUE)
-	{
-		//Refreshing the stringstream
-		stringstream ss;
-
-		//Loading in the Fasta File list to the 'FastaSequencesDirectory'
-			ss<<search_data.cFileName;
-			FastaSequencesDirectory.push_back("Dna_Sequences/"+ss.str());
-
-		if(FindNextFile(handle, &search_data) == FALSE)
-			break;
-	}
-	
-
-}
-*//*
-void PrintAllFastaFiles()
-{
-	cout<<endl;
-	for(int i = 0; i < FastaSequencesDirectory.size(); i++)
-	{
-		cout<< FastaSequencesDirectory.at(i) << endl;
-	}
-}
+/*
+* Ui.cpp
+*
+*This is a singleton class for the purpose of creating a singleton user-interface for this program.
+*
 */
-void MainMenu()
+
+bool UserInterface::pInstance = false;
+
+UserInterface::UserInterface()
+{
+	if(!pInstance || pInstance == false)
+	{
+		//Initalize file input holders;
+		file1 = new char[100];
+		file2 = new char[100];
+		initiated = true;
+		SequencesImported = false;
+		pInstance = true;
+
+		//Start the program
+		start();
+	}
+	else
+		cout<<"Sorry, a userinterface already exists. If you want another you will have to delete this one first."<<endl;
+	//return pInstance;
+}
+
+UserInterface::~UserInterface()
+{
+	delete file1;
+	delete file2;
+	
+	if(SequencesImported == true)
+	{
+		delete seq;
+		delete seq2;
+	}
+
+	pInstance = NULL;
+}
+
+//UserInterface* UserInterface::pInstance = NULL;
+
+void UserInterface::start()
+{
+//	LoadAllFastaFiles();
+
+	cout<<"Welcome to the DNA Sequencer Program"<<endl;
+	Options();
+	
+}
+
+void UserInterface::MainMenu()
 {
 		cout<<endl;
 		cout<<"Options include:"<<endl;
@@ -65,18 +76,47 @@ void MainMenu()
 		
 		if(SequencesImported == true)
 		{
-		cout<<"'p', print out sequences"<<endl;
-		cout<<"'c', compare two sequences using pairwise alignment"<<endl;
-		cout<<"'t', build a polygenetic tree of your data"<<endl;
+			cout<<"'p', print out sequences"<<endl;
+			cout<<"'c', compare two sequences using pairwise alignment"<<endl;
+			cout<<"'t', build a polygenetic tree of your data"<<endl;
 		}
 
 		cout<<"'m', Options-Menu"<<endl;
 		cout<<"'q', Quit the program"<<endl;
 		cout<<endl;
+	
 }
 
-void Print()
+void UserInterface::Options()
 {
+
+	while(initiated == true)
+	{
+		MainMenu();
+		choice = '0';
+		cin>>choice;
+
+		switch(choice)
+		{
+			case 'o': Open();
+			break;
+			case 'p': Print();
+			break;
+			case 'c': Compare();
+			break;
+			case 't': Tree();
+			break;
+			case 'q' : Quit();
+			default:
+			break;
+		}
+	}
+	
+}
+
+void UserInterface::Print()
+{
+	
 	if(SequencesImported == true)
 	{
 		cout<<endl;
@@ -85,38 +125,35 @@ void Print()
 			cout<<endl;
 	
 		cout<<"Printing out the second Sequence"<<endl;
-				seq2->printOut();
-				cout<<endl;
+			seq2->printOut();
+			cout<<endl;
 	}
-		
-		MainMenu();
+	
 }
 
-void Tree()
+void UserInterface::Tree()
 {
+	
 	cout<<endl;
 	cout<<"Phylogenetic Tree Analysis Section"<<endl;
 	cout<<"Sorry this part of the program does not currently exist."<<endl;
 
 
 	//****Alex****
-	//Please add the code for the Phylogenetic tree algorithm here
-
-	MainMenu();
-
+	//Please add the code for the Phylogenetic tree algorithm here	
 }
 
-void Compare()
+void UserInterface::Compare()
 {
 	seq->homology(seq, seq2);
-	
-	MainMenu();
 }
 
-void Open()
+void UserInterface::Open()
 {
+	
 	cout<<"Open Files Section:"<<endl;
 
+	
 	if(SequencesImported == true)
 	{
 		cout<<"You already have two files open."<<endl;
@@ -130,6 +167,7 @@ void Open()
 			{
 				cout<<"Returning to main-menu"<<endl;
 				cout<<endl;
+					MainMenu();
 				return;
 			}
 			else
@@ -139,6 +177,7 @@ void Open()
 				SequencesImported = false;
 			}
 	}
+	
 
 	while(true)
 	{
@@ -146,111 +185,64 @@ void Open()
 	cout<<"Currently you have the three sequences available:"<<endl;
 	//LoadAllFastaFiles();
 
+	cout<<endl;
+	cout<<"Your choices are:(You can have others, but you will have to either put them in the Dna_Sequences folder or type in the path yourself):"<<endl;
+	cout<<"Dna_Sequences/M90848.fasta"<<endl;
+	cout<<"Dna_Sequences/M90849.fasta"<<endl;
+
 	//Leave out for now till I can find a way to get the Fasta Files into a database.
 	//PrintAllFastaFiles();
-	cout<<endl;
-
 	cout<<"\nEnter the first sequence you want to compare"<<endl;
-	file1 = new char[100];
 	cin>>file1;
+
 
 	stringstream sc;
 	sc<<file1;
 
 	cout<<endl;
 	cout<<"Enter the second sequence you want to compare"<<endl;
-	file2 = new char[100];
 	cin>>file2;
 
 	stringstream sd;
 	sd<<file2;
+	
 
 	//Now using the sequencer methods with the data.
 
-	/*	if(find(FastaSequencesDirectory.begin(), FastaSequencesDirectory.end(), sc.str()) !=FastaSequencesDirectory.end())
-		{
-			if(find(FastaSequencesDirectory.begin(), FastaSequencesDirectory.end(), sd.str()) !=FastaSequencesDirectory.end())
-			{
-
-
-
-			}
-			else
-			{
-				cout<<endl;
-				cout<<"The second sequence you entered isn't valid."<<endl;
-				cout<<"Please try a more valid one, thanks."<<endl;
-				cout<<endl;
-			}
-
-		}
-		else
-		{
-			cout<<endl;
-			cout<<"The first sequence you entered isn't valid"<<endl;
-			cout<<"Please try a more valid one, thanks."<<endl;
-			cout<<endl;
-		}*/
-
 		//Create two new Sequence objects
 		seq = new Sequence(file1);
+		
+			if(seq->checkExistence() == false)
+			{
+				cout<<"Your first file does not exist, starting over"<<endl;
+				cout<<endl;
+				Open();
+			}
+		
+	
 		seq2 = new Sequence(file2);
+		
+			if(seq2->checkExistence() == false)
+			{
+				cout<<"Your second file does not exist, starting over"<<endl;
+				cout<<endl;
+				Open();
+			}
 
 		SequencesImported = true;
-
+	
 		cout<<endl;
 		cout<<"Your Sequences have been entered returning to main menu."<<endl;
 		cout<<endl;
 
-		MainMenu();
-
 		return;
 	}//end of while loop
+	
 }
 
-void Quit()
+void UserInterface::Quit()
 {
-	if(SequencesImported == true)
-	{
-		delete(seq);
-		delete(seq2);
-	}
-
 	cout<<"Quiting"<<endl;
-	exit(0);
-}
-
-void Options()
-{
-	while(true)
-	{
-		char choice;
-		cin>>choice;
-
-		switch(choice)
-		{
-			case 'o': Open();
-			break;
-			case 'p': Print();
-			break;
-			case 'c': Compare();
-			break;
-			case 't': Tree();
-			break;
-			case 'm': MainMenu();
-			break;
-			case 'q' : Quit();
-			default: MainMenu();
-			break;
-		}
-	}
-}
-
-void start()
-{
-//	LoadAllFastaFiles();
-
-	cout<<"Welcome to the DNA Sequencer Program"<<endl;
-	MainMenu();
-	Options();
+	initiated = false;
+	return;
 }
