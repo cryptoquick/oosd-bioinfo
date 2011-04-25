@@ -1,13 +1,19 @@
 #include "file.h"
-#include "seq.h"
 #include <iostream>
 #include <fstream>
 #include <string>
-#include<stdio.h>
+//#include<stdio.h>
+//#include <stdlib.h>
 
 File::File(char* p) { 
+
 		path = p; 
 		load();
+}
+
+bool File::checkExistence()
+{
+	return exists;
 }
 
 void File::load() {
@@ -16,7 +22,8 @@ void File::load() {
 	int i = 0;
 	ifstream input (path);
 	if(!input.is_open()) {
-		cout << "Failed to open file " << path;
+		cout << "Failed to open file " << path << endl;
+		exists = false;
 		return;
 	}
 
@@ -30,18 +37,18 @@ void File::load() {
 
 	input.close();
 
-	data = output;
+	odata = output;
 }
 
 string File::getSequence()
 {	
-	return data;
+	return odata;
 }
 
-//void File::data
 
 void File::printOut()
 {
-	cout<<data<<endl;
+	cout<<odata<<endl;
 }
+
 
