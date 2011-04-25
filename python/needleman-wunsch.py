@@ -10,7 +10,8 @@ for file_name in fasta_files:
 	seq = ""
 	for el in flines[1:]:
 		seq += el.strip()
-	seqs.append(seq) # Place desired length of comparison here.
+	if (seq != ''):
+		seqs.append(seq) # Place desired length of comparison here.
 	f.close()
 
 # Var names from Wikipedia pseudocode
@@ -19,7 +20,7 @@ A = seqs[0] # First sequence to be compared
 B = seqs[1] # Second ""
 I = range(len(seqs[0])) # To help iterate (Pythonic)
 J = range(len(seqs[1])) # ""
-F = [[0 for i in seqs[0]] for j in seqs[1]] # Fill a 2D array with zeroes
+F = [[0 for i in seqs[1]] for j in seqs[0]] # Fill a 2D array with zeroes
 # Similarity matrix from Wikipedia:
 S = \
 {'A': {'A': 10, 'G': -1, 'C': -3, 'T': -4},
