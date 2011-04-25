@@ -5,16 +5,24 @@
 
 using namespace std;
 
-class File {
+
+class FileSystem {
+	virtual void printOut() = 0;
+	virtual bool checkExistence() = 0;
+};
+
+
+class File: public FileSystem{
 	const char* path;
 	void load();
+	bool exists;
 
 protected:
-	string data;
+	string odata;
 	
 public:
 	File(char* p);
-	void printOut();
+	virtual void printOut();
+	virtual bool checkExistence();
 	string getSequence();
-
 };
