@@ -2,21 +2,23 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include "file.h"
 
 using namespace std;
 
-class Sequence {
+class Sequence: public FileSystem{
+	File *file;
 	const char* path;
 	char* SeqName;
 	int length;
 	string data;
 	vector<char> seq;
-	//~Sequence();
-
+	
 public:
 	Sequence(char *key);
+	~Sequence();
 	void homology(Sequence*, Sequence*);
 	void printOut();
 	int getLength();
+	bool checkExistence();
 };
-

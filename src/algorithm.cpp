@@ -1,9 +1,12 @@
 #include "algorithm.h"
+//#include <string>
 
-Algorithm::Algorithm (string type) {
-	this.type = type;
+Algorithm::Algorithm() {
+	//this.type = type;
 }
+/*
+Algorithm::run()
+{
 
-Algorithm::Run () {
-	
 }
+*/

@@ -1,17 +1,16 @@
-#ifndef __ALGORITHM_H
-#define __ALGORITHM_H
+//#ifndef __ALGORITHM_H
+//#define __ALGORITHM_H
+//#include <string>
+//#include "seq.h"
 
-#include "seq.h"
-
-class Algorithm ()
+class Algorithm
 {
 private:
-	string type;
+	//string type;
 
 public:
-	Algorithm (string type) { }
-	
-	void run();
-}
+	Algorithm();
+	//void run();
+};
 
-#endif
+//#endif

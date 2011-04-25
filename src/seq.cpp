@@ -1,16 +1,17 @@
-#include "file.h"
 #include "seq.h"
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
 
+//static File *file;
 
 
-
-Sequence::Sequence(char *p) 
+Sequence::Sequence(char *p)
 { 
-	File * file = new File(p);
+	//FileSystem* sys;
+	file = new File(p);
+	
 	SeqName = p;
 	data = string(file->getSequence()); 
 	length = file->getSequence().length();
@@ -19,15 +20,18 @@ Sequence::Sequence(char *p)
 	{
 		seq.push_back(data[i]);
 	}
-
+	
 }
 
-/*
+bool Sequence::checkExistence()
+{
+	return file->checkExistence();
+}
+
 Sequence::~Sequence()
 {
-
+	delete file;
 }
-*/
 
 int Sequence::getLength()
 {
