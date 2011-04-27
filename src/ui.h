@@ -14,7 +14,7 @@ static bool pInstance;
 
 public:
 
-	UserInterface();
+	UserInterface(bool);
 	~UserInterface();
 
 	void MainMenu();
@@ -23,6 +23,7 @@ public:
 	void Tree();
 	void Compare();
 	void Open();
+	void Open(char*, char*);
 	void Quit();
 	void Options();
 	void start();
