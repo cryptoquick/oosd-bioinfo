@@ -1,4 +1,4 @@
-bioinfo: src/main.o src/ui.o src/file.o src/seq.o
+bioinfo: src/main.o src/ui.o src/file.o src/seq.o src/needleman_wunsch.o
 	g++ -o bioinfo src/main.o src/ui.o src/file.o src/seq.o src/needleman_wunsch.o
 
 main.o: src/main.cpp
