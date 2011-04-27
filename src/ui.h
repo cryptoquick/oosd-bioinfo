@@ -13,7 +13,6 @@ bool SequencesImported;
 static bool pInstance;
 
 public:
-
 	UserInterface(bool);
 	~UserInterface();
 
@@ -23,10 +22,9 @@ public:
 	void Tree();
 	void Compare();
 	void Open();
-	void Open(char*, char*);
+	void Open(string, string);
 	void Quit();
 	void Options();
 	void start();
-
 };
 

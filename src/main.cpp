@@ -15,10 +15,13 @@ int main(int argc, char* argv[])
 		
 		if (strcmp(argv[1], "-nm") == 0)
 		{
-			char* file1 = argv[2];
-			char* file2 = argv[3];
+			string data1 = argv[2];
+			string data2 = argv[3];
 			
-			ui->Open(file1, file2);
+			ui->Open(data1, data2);
+			
+			ui->Compare();
+			ui->Print();
 			
 			return 0;
 		}

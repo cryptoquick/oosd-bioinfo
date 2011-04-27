@@ -23,6 +23,16 @@ Sequence::Sequence(char *p)
 	
 }
 
+Sequence::Sequence(string data)
+{
+	int length = data.length();
+
+	for(int i=0; i<length; i++)
+	{
+		seq.push_back(data[i]);
+	}
+}
+
 bool Sequence::checkExistence()
 {
 	return file->checkExistence();
