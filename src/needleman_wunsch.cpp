@@ -1,41 +1,6 @@
-/*
- * NeedlemanWunsch.cpp
- *
- *  Created on: Apr 23, 2011
- *      Author: andrew
- */
-
-#include <vector>
+#include "needleman_wunsch.h"
 #include <iostream>
-using namespace std;
 
-
-class NeedlemanWunsch {
-	int m, n; // Lengths of DNA sequences
-	int g; // Gap penalty
-	vector<char> seq1; // DNA sequence 1
-	vector<char> seq2; // DNA sequence 2
-	vector<vector <int> > scores; // Score matrix
-	vector<vector <int> > traceback; // Traceback matrix - 0 = over, 1 = diag, 2 = up, 3 = left
-	int sMatrix[4][4]; // Scoring matrix - GATC x GATC
-
-	void initialize();
-	void fill();
-	void traceitback();
-
-protected:
-	vector<char> seq1aligned; // DNA sequence 1 aligned
-	vector<char> seq2aligned; // DNA sequence 2 aligned
-
-	void setScoringMatrix(int input[4][4]);
-
-public:
-	NeedlemanWunsch(int gap_penalty, vector<char> s1, vector<char> s2);
-	void printIt();
-	void align();
-	void printTracer();
-	void printScores();
-};
 
 void NeedlemanWunsch::printScores() {
 	for(int i = 0; i < (n + 1); i++) { // Row loop
@@ -67,7 +32,7 @@ void NeedlemanWunsch::printIt() {
 	cout << endl;
 	for(int i = 0; i < seq2aligned.size(); i++)
 		cout << seq2aligned[i];
-			
+
 }
 
 
@@ -260,7 +225,7 @@ void NeedlemanWunsch::traceitback() {
 
 	// Begin traceback - Loop until first cell is reached, filling in aligned
 	// sequences starting from the back
-	while((trace_x > 0) && (trace_y > 0)) {
+	while((trace_x > 0) || (trace_y > 0)) {
 		cout << trace_x << trace_y << endl;
 		// Diagonal - letters aligned
 		if(traceback[trace_y][trace_x] == 1) {
@@ -278,7 +243,7 @@ void NeedlemanWunsch::traceitback() {
 			seq2aligned.insert(seq2aligned.begin(), '-');
 			seq1_pos--;
 			trace_x--;
-		} 
+		}
 
 		// Up - gap in sequence 1
 		if(traceback[trace_y][trace_x] == 2) {
@@ -287,24 +252,12 @@ void NeedlemanWunsch::traceitback() {
 			seq2_pos--;
 			trace_y--;
 		}
-           
+
 	} // End traceback loop
 
-		while(trace_x > 0)
-		{
- 			seq1aligned.insert(seq1aligned.begin(), seq1[seq1_pos]);
-			seq2aligned.insert(seq2aligned.begin(), '-');
-			seq1_pos--;
-			trace_x--;                     
-        }
-        
-  		while(trace_y > 0)
-		{
-			seq1aligned.insert(seq1aligned.begin(), '-');
-			seq2aligned.insert(seq2aligned.begin(), seq2[seq2_pos]);
-			seq2_pos--;
-			trace_y--;                  
-        } 
+
+
+
 
 } // End traceback method
 
@@ -316,44 +269,4 @@ void NeedlemanWunsch::align() {
 	initialize();
 	fill();
 	traceitback();
-}
-
-int main() {
-	vector<char> s1;
-	
-	//I don't know why but it skips the first entry
-	s1.push_back('z');
-	
-	s1.push_back('g');
-	s1.push_back('a');
-	s1.push_back('a');
-	s1.push_back('t');
-	s1.push_back('t');
-	s1.push_back('c');
-	s1.push_back('a');
-	s1.push_back('g');
-	s1.push_back('t');
-	s1.push_back('t');
-	s1.push_back('a');
-
-	vector<char> s2;
-	//I don't know why but it skips the first entry	
-	s2.push_back('z');
-	
-	s2.push_back('t');
-	s2.push_back('g');
-	s2.push_back('c');
-	s2.push_back('t');
-	s2.push_back('a');
-	s2.push_back('g');
-	s2.push_back('a');
-
-	NeedlemanWunsch blah(-1, s1, s2);
-	blah.align();
-	blah.printScores();
-	blah.printTracer();
-	blah.printIt();
-
-	int test;
-	cin>>test;
 }
