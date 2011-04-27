@@ -1,26 +1,37 @@
-import glob
+import glob, sys
+
+# Command-line usage: python3 needleman-wunsch.py M90848 M90849
 
 fasta_files = glob.glob(('../fasta_data/*'))
-seqs = []
+seqs = {}
 
 # Read & Format
 for file_name in fasta_files:
 	f = open(file_name, "r")
 	flines = f.readlines()
 	seq = ""
+	name = ""
 	for el in flines[1:]:
 		seq += el.strip()
+	for el in flines[:1]:
+		name = el.split('|')[3]
 	if (seq != ''):
-		seqs.append(seq) # Place desired length of comparison here.
+		seqs[name[:6]] = seq
 	f.close()
+
+name0 = sys.argv[1] # e.g. "M90848"
+name1 = sys.argv[2] # e.g. "M90849"
+
+seq0 = seqs[name0]
+seq1 = seqs[name1]
 
 # Var names from Wikipedia pseudocode
 d = -5 # Gap penalty
-A = seqs[0] # First sequence to be compared
-B = seqs[1] # Second ""
-I = range(len(seqs[0])) # To help iterate (Pythonic)
-J = range(len(seqs[1])) # ""
-F = [[0 for i in seqs[1]] for j in seqs[0]] # Fill a 2D array with zeroes
+A = seq0 # First sequence to be compared
+B = seq1 # Second ""
+I = range(len(seq0)) # To help iterate (Pythonic)
+J = range(len(seq1)) # ""
+F = [[0 for i in seq0] for j in seq1] # Fill a 2D array with zeroes
 # Similarity matrix from Wikipedia:
 S = \
 {'A': {'A': 10, 'G': -1, 'C': -3, 'T': -4},
@@ -45,8 +56,8 @@ for i in I[1:]:
 # Traceback
 AlignmentA = ""
 AlignmentB = ""
-i = len(seqs[0]) - 1
-j = len(seqs[1]) - 1
+i = len(seq0) - 1
+j = len(seq1) - 1
 
 while (i > 0 and j > 0):
 	Score = F[i][j]
