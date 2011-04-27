@@ -118,19 +118,14 @@ void UserInterface::Options()
 
 void UserInterface::Print()
 {
-	
-	if(SequencesImported == true)
-	{
-		cout<<endl;
-		cout<<"Printing out the first Sequence"<<endl;	
-			seq->printOut();
-			cout<<endl;
-	
-		cout<<"Printing out the second Sequence"<<endl;
-			seq2->printOut();
-			cout<<endl;
-	}
-	
+	cout<<endl;
+	cout<<"Printing out the first Sequence"<<endl;	
+	seq->printOut();
+	cout<<endl;
+
+	cout<<"Printing out the second Sequence"<<endl;
+	seq2->printOut();
+	cout<<endl;
 }
 
 void UserInterface::Tree()
