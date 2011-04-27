@@ -16,6 +16,7 @@ class Sequence: public FileSystem{
 	
 public:
 	Sequence(char *key);
+	Sequence(string);
 	~Sequence();
 	void homology(Sequence*, Sequence*);
 	void printOut();

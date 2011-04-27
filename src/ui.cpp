@@ -239,35 +239,17 @@ void UserInterface::Open()
 
 		return;
 	}//end of while loop
-	
 }
 
-void UserInterface::Open(char* file1, char* file2)
+void UserInterface::Open(string data1, string data2)
 {
 	//Create two new Sequence objects
-		seq = new Sequence(file1);
-		
-			if(seq->checkExistence() == false)
-			{
-				cout << "seq1err";
-				return;
-			}
-		
-	
-		seq2 = new Sequence(file2);
-		
-			if(seq2->checkExistence() == false)
-			{
-				cout << "seq2err";
-				return;
-			}
+	seq = new Sequence(data1);
+	seq2 = new Sequence(data2);
 
-		SequencesImported = true;
-	
-		cout<<endl;
-		cout<<endl;
+	SequencesImported = true;
 
-		return;
+	return;
 }
 
 void UserInterface::Quit()
