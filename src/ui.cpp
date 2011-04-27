@@ -24,7 +24,7 @@ using namespace std;
 
 bool UserInterface::pInstance = false;
 
-UserInterface::UserInterface()
+UserInterface::UserInterface(bool standalone)
 {
 	if(!pInstance || pInstance == false)
 	{
@@ -35,8 +35,10 @@ UserInterface::UserInterface()
 		SequencesImported = false;
 		pInstance = true;
 
-		//Start the program
-		start();
+		//Start the program if standalone
+		if (standalone) {
+			start();
+		}
 	}
 	else
 		cout<<"Sorry, a userinterface already exists. If you want another you will have to delete this one first."<<endl;
@@ -238,6 +240,34 @@ void UserInterface::Open()
 		return;
 	}//end of while loop
 	
+}
+
+void UserInterface::Open(char* file1, char* file2)
+{
+	//Create two new Sequence objects
+		seq = new Sequence(file1);
+		
+			if(seq->checkExistence() == false)
+			{
+				cout << "seq1err";
+				return;
+			}
+		
+	
+		seq2 = new Sequence(file2);
+		
+			if(seq2->checkExistence() == false)
+			{
+				cout << "seq2err";
+				return;
+			}
+
+		SequencesImported = true;
+	
+		cout<<endl;
+		cout<<endl;
+
+		return;
 }
 
 void UserInterface::Quit()
