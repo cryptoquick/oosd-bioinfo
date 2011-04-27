@@ -19,7 +19,6 @@ int main(int argc, char* argv[])
 			string data2 = argv[3];
 			
 			ui->Open(data1, data2);
-			
 			ui->Compare();
 			ui->Print();
 			

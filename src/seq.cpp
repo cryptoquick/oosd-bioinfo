@@ -25,7 +25,7 @@ Sequence::Sequence(char *p)
 
 Sequence::Sequence(string data)
 {
-	int length = data.length();
+	length = data.length();
 
 	for(int i=0; i<length; i++)
 	{
@@ -61,7 +61,6 @@ void Sequence::homology(Sequence *seq1, Sequence *seq2)
 	const int scoreBonus = 1;
 	const int scoreWrong = 0;
 
-
     if (seq1->getLength() == seq2->getLength()) 
 	{
 		
@@ -94,14 +93,14 @@ void Sequence::homology(Sequence *seq1, Sequence *seq2)
 void Sequence::printOut()
 {
 	cout<<endl;
-	cout<<"[File Path: "<< SeqName << "]" << endl;
+//	cout<<"[File Path: "<< SeqName << "]" << endl;
 	cout<<data<<endl;
-/*
+
 for(int i = 0; i<length; i++)
 {
-	cout<<seq[i]<< " ";
+	cout<<seq[i];
 }
 cout<<endl;
-*/
+
 
 }
