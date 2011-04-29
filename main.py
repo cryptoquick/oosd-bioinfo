@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 
 from subprocess import *
-import glob, web
+from buzhug import Base
+import glob, argparse, web
 
-
-### Bioinformatics
-
-fasta_files = glob.glob(('fasta_data/*'))
+fasta_files = glob.glob(('./fasta_data/*'))
 seqs = {}
+db = Base('./db')
 
 # Read & Format.
 def readfiles():
@@ -24,27 +23,46 @@ def readfiles():
 			seqs[name[:6]] = seq
 		f.close()
 
-def callbio():
-	output = Popen(["./bioinfo", "-nm", seqs["M90848"], seqs["M90849"]], stdout=PIPE).communicate()[0]
+### Bioinformatics
+
+def callbio(seq1, seq2):
+	output = Popen(["./bioinfo", "-nm", seqs[seq1], seqs[seq2]], stdout=PIPE).communicate()[0]
 	return output
 
+### Database
+
+# Define a command-line argument for loading the database.
+parser = argparse.ArgumentParser(description='Load sequences into database, one-time only.')
+parser.add_argument('--load')
+print(parser.parse_args())
+loading = True
 
 ### Web Interface
 
-print("Content-type: text/html\n")
+#print("Content-type: text/html\n")
 
 urls = (
 	'/', 'main'
+#	'/seq', 'seq'
 )
 
 class main:
 	def GET(self):
 		readfiles()
-		out = callbio()
+		out = callbio("M90848", "M90849")
 		message = "Welcome to bioinfo!\nHere's your output:\n" + out
 		return message
 
+"""
+class seq:
+	def POST():
+		return render.seq(name)
+"""
+
 # Run web app.
 if __name__ == "__main__":
-	app = web.application(urls, globals())
-	app.run()
+ 	if not loading:
+		app = web.application(urls, globals())
+		app.run()
+
+db.close()
