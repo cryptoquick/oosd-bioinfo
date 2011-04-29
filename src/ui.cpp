@@ -142,7 +142,8 @@ void UserInterface::Tree()
 
 void UserInterface::Compare()
 {
-	seq->homology(seq, seq2);
+	//seq->homology(seq, seq2);
+	seq->compare(seq, seq2);
 }
 
 void UserInterface::Open()
@@ -203,6 +204,8 @@ void UserInterface::Open()
 	stringstream sd;
 	sd<<file2;
 	
+	//file1 = "M90848.fasta";
+	//file2 = "M90848.fasta";
 
 	//Now using the sequencer methods with the data.
 

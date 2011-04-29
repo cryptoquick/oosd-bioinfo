@@ -1,10 +1,15 @@
 #include "ui.h"
+//#include "needleman_wunsch.h"
+//#include <vector>
 #include <string.h>
+
 
 int main(int argc, char* argv[])
 {
+
 	UserInterface * ui;
 	// Simple interface for running commands.
+
 	if (argc == 1) {
 		ui = new UserInterface(true);
 		delete ui;
@@ -21,7 +26,6 @@ int main(int argc, char* argv[])
 			ui->Open(data1, data2);
 			ui->Compare();
 			ui->Print();
-			
 			return 0;
 		}
 	}
@@ -29,7 +33,7 @@ int main(int argc, char* argv[])
 	{
 		cout << "incorrect arguments\n";
 	}
-	
+
 	//Just for tests to make sure that the singleton is working as expected
 	/*
 	UserInterface * ui2 = new UserInterface();
