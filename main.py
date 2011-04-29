@@ -3,23 +3,6 @@
 from subprocess import *
 import glob, web
 
-### Web Interface
-
-urls = (
-	'/', 'main'
-)
-
-class main:
-	def GET(self):
-		readfiles()
-		out = callbio()
-		message = "Welcome to bioinfo!\nHere's your output:\n" + out
-		return message
-
-# Run web app.
-if __name__ == "__main__":
-	app = web.application(urls, globals())
-	app.run()
 
 ### Bioinformatics
 
@@ -44,3 +27,24 @@ def readfiles():
 def callbio():
 	output = Popen(["./bioinfo", "-nm", seqs["M90848"], seqs["M90849"]], stdout=PIPE).communicate()[0]
 	return output
+
+
+### Web Interface
+
+print("Content-type: text/html\n")
+
+urls = (
+	'/', 'main'
+)
+
+class main:
+	def GET(self):
+		readfiles()
+		out = callbio()
+		message = "Welcome to bioinfo!\nHere's your output:\n" + out
+		return message
+
+# Run web app.
+if __name__ == "__main__":
+	app = web.application(urls, globals())
+	app.run()
