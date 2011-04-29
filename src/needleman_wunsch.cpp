@@ -1,6 +1,36 @@
 #include "needleman_wunsch.h"
 #include <iostream>
 
+/*! NeedlemanWunsch constructor
+ *  Sets gap penalty and sequence set through parameters
+ *  Calculates and sets length of sequences
+ */
+
+NeedlemanWunsch::NeedlemanWunsch(int gap_penalty, vector<char> s1, vector<char> s2) {
+	g = gap_penalty;
+	m = s1.size()+1;
+	n = s2.size()+1;
+
+	// Copy vectors
+	seq1 = s1;
+	seq2 = s2;
+
+	//Added so the program can work, forces z at beginning
+	seq1.insert(seq1.begin(), 'Z');
+	seq2.insert(seq2.begin(), 'Z');
+
+	// Set default scoring matrix to one for match, 0 for mismatch
+	for(int i = 0; i < 4; i++) { // Row loop
+		for(int j = 0; j < 4; j++) { // Column loop
+			if(i == j)
+				sMatrix[i][j] = 1;
+			else
+				sMatrix[i][j] = 0;
+		}
+	}
+}
+
+
 
 void NeedlemanWunsch::printScores() {
 	for(int i = 0; i < (n + 1); i++) { // Row loop
@@ -35,33 +65,6 @@ void NeedlemanWunsch::printIt() {
 
 }
 
-
-
-
-/*! NeedlemanWunsch constructor
- *  Sets gap penalty and sequence set through parameters
- *  Calculates and sets length of sequences
- */
-
-NeedlemanWunsch::NeedlemanWunsch(int gap_penalty, vector<char> s1, vector<char> s2) {
-	g = gap_penalty;
-	m = s1.size();
-	n = s2.size();
-
-	// Copy vectors
-	seq1 = s1;
-	seq2 = s2;
-
-	// Set default scoring matrix to one for match, 0 for mismatch
-	for(int i = 0; i < 4; i++) { // Row loop
-		for(int j = 0; j < 4; j++) { // Column loop
-			if(i == j)
-				sMatrix[i][j] = 1;
-			else
-				sMatrix[i][j] = 0;
-		}
-	}
-}
 
 /*! Set scoring matrix method
  *  Takes an 4 x 4 array of ints as parameter and sets them to scoring matrix
