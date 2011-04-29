@@ -34,14 +34,14 @@ def callbio(seq1, seq2):
 loading = False
 
 # Define a command-line argument for loading the database.
-parser = argparse.ArgumentParser(description='Load sequences into database, one-time only.')
+'''parser = argparse.ArgumentParser(description='Load sequences into database, one-time only.')
 parser.add_argument('--load', action='store_true')
 args = parser.parse_args()
 print(args)
 if args.load:
 	print(args.load)
 #	db = Base('./db')
-#	loading = True
+#	loading = True'''
 
 ### Web Interface
 
@@ -55,7 +55,7 @@ urls = (
 class main:
 	def GET(self):
 		readfiles()
-		out = callbio("M90848", "M90849")
+		out = callbio("M90848", "M90855")
 		message = "Welcome to bioinfo!\nHere's your output:\n" + out
 		return message
 
@@ -71,4 +71,4 @@ if __name__ == "__main__":
 		app = web.application(urls, globals())
 		app.run()
 
-db.close()
+#db.close()
