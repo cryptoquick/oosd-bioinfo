@@ -1,0 +1,24 @@
+bioinfo - a bioinformatics project
+by Alex Trujillo, Luke Hopkins, and Andrew Leitheiser
+released under the GPL
+
+=prerequisites=
+basic set of developer tools: g++, gnu-make, easy_install
+python 2.7
+web.py: easy_install web.py
+buzhug: easy_install buzhug
+
+=installation=
+navigate to where you'd like to install this program within your terminal. now:
+hg clone http://oosd-bioinfo.googlecode.com/hg/
+make
+
+=usage=
+bioinfo can be used three different ways. a graphical web interface is provided, courtesy of python.
+-command line access-
+./bioinfo
+-localhost access-
+python main.py
+specify a port, otherwise, 8080 is used by default
+-server-
+place this program in a webserver, and have the server access it from there using CGI or similar
