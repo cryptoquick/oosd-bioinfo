@@ -1,7 +1,7 @@
-#ifndef __NEEDLEMAN_H
-#define __NEEDLEMAN_H
+//#ifndef __NEEDLEMAN_H
+//#define __NEEDLEMAN_H
 
-#include "algorithm.h"
+//#include "algorithm.h"
 
 #include <vector>
 #include <iostream>
@@ -34,4 +34,4 @@ public:
 	void printTracer();
 	void printScores();
 };
-#endif
+//#endif

@@ -12,14 +12,15 @@ class Sequence: public FileSystem{
 	char* SeqName;
 	int length;
 	string data;
-	vector<char> seq;
 	
+
 public:
 	Sequence(char *key);
 	Sequence(string);
 	~Sequence();
-	void homology(Sequence*, Sequence*);
+	void compare(Sequence*, Sequence*);
 	void printOut();
 	int getLength();
 	bool checkExistence();
+	vector<char> seq;
 };
