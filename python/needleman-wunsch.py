@@ -2,7 +2,7 @@ import glob, sys
 
 # Command-line usage: python3 needleman-wunsch.py M90848 M90849
 
-fasta_files = glob.glob(('../fasta_data/*'))
+fasta_files = glob.glob(('fasta_data/*'))
 seqs = {}
 
 # Read & Format
@@ -31,7 +31,7 @@ A = seq0 # First sequence to be compared
 B = seq1 # Second ""
 I = range(len(seq0)) # To help iterate (Pythonic)
 J = range(len(seq1)) # ""
-F = [[0 for i in seq0] for j in seq1] # Fill a 2D array with zeroes
+F = [[0 for i in seq1] for j in seq0] # Fill a 2D array with zeroes
 # Similarity matrix from Wikipedia:
 S = \
 {'A': {'A': 10, 'G': -1, 'C': -3, 'T': -4},

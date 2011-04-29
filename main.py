@@ -6,7 +6,7 @@ import glob, argparse, web
 
 fasta_files = glob.glob(('./fasta_data/*'))
 seqs = {}
-db = Base('./db')
+db = []
 
 # Read & Format.
 def readfiles():
@@ -31,11 +31,17 @@ def callbio(seq1, seq2):
 
 ### Database
 
+loading = False
+
 # Define a command-line argument for loading the database.
 parser = argparse.ArgumentParser(description='Load sequences into database, one-time only.')
-parser.add_argument('--load')
-print(parser.parse_args())
-loading = True
+parser.add_argument('--load', action='store_true')
+args = parser.parse_args()
+print(args)
+if args.load:
+	print(args.load)
+#	db = Base('./db')
+#	loading = True
 
 ### Web Interface
 
