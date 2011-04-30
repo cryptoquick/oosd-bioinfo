@@ -53,23 +53,33 @@ class Bio:
 
 urls = (
 	'/', 'main',
-	'/diffs', 'diffs'
+	'/', 'nw',
+	'/diffs', 'diffs',
+	'/seqs', 'seqs'
 )
 
 render = web.template.render('templates/')
 
 bio = Bio("Needleman-Wunsch")
-bio.addseq("M90848")
-bio.addseq("M90855")
+bio.seqs = readfiles()
 
 class main:
 	def GET(self):
-		bio.seqs = readfiles()
+		return render.index()
+
+class nw:
+	def POST(self):
 		if bio.algorithm == "Needleman-Wunsch":
 			bio.nw()
+		
+		seqparms = web.input()
+		bio.addseq(seqparms[0])
+		bio.addseq(seqparms[1])
+	#	bio.addseq("M90848")
+	#	bio.addseq("M90855")
 		#message = "Welcome to bioinfo!\nHere's your output:\n" + out
 		if bio.nw.done and bio.error == "":
-			out = render.index( \
+			out = render.nw( \
 				bio.results['similarity'],
 				bio.name[0],
 				bio.name[1],
@@ -85,6 +95,10 @@ class main:
 class diffs:
 	def POST(self):
 		return json.dumps(bio.results['diffs'])
+
+class seqs:
+	def POST(self):
+		return json.dumps(sorted([s[0] for s in bio.seqs.iteritems()]))
 
 # Run web app.
 if __name__ == "__main__":
