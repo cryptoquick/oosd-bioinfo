@@ -8,6 +8,17 @@ bioinfo - a bioinformatics project
 by Alex Trujillo, Luke Hopkins, and Andrew Leitheiser
 released under the GPL since 1302863129
 
+=features=
+- Needleman-Wunsch alignment
+- simple homology comparison
+- web interface
+- difference highlighting
+
+# to come:
+- sequence database (can be loaded from local files)
+- multi-sequence alignment
+- phylogeny trees
+
 =prerequisites=
 basic set of developer tools: g++, gnu-make, easy_install
 python 2.7

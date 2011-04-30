@@ -44,3 +44,7 @@ p, pre {margin: 10px;}
 	font-size: 14px;
 	font-weight: bold;
 }
+
+.hred {
+	background-color: #f99;
+}
