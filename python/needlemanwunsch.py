@@ -5,6 +5,7 @@ class NeedlemanWunsch:
 		self.A = ""
 		self.B = ""
 		self.done = False
+		self.diffs = []
 
 	def align(self):
 		# Var names from Wikipedia pseudocode
@@ -73,7 +74,7 @@ class NeedlemanWunsch:
 		self.A = AlignmentA
 		self.B = AlignmentB
 		
-		done = True
+		self.done = True
 
 	# Similarity
 	def homology(self):
@@ -99,6 +100,8 @@ class NeedlemanWunsch:
 		while (k < length):
 			if (sim1[k] == sim2[k]):
 				total += 1
+			else:
+				self.diffs.append(k)
 			k += 1
 			
 		similarity = (float(total) / float(length)) * 100.0
