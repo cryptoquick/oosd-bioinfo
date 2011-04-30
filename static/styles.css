@@ -12,6 +12,7 @@ body, html {
 p, pre {margin: 10px;}
 
 #results {
+	float: left;
 	margin: 50px;
 	padding: 1px;
 	padding-bottom: 5px;
@@ -47,4 +48,27 @@ p, pre {margin: 10px;}
 
 .hred {
 	background-color: #f99;
+}
+
+.button, .buttonhi {
+	display: block;
+	background-color: #ccf;
+	padding: 5px;
+	margin: 5px;
+	border-radius: 5px;
+	text-decoration: none;
+	border: 1px solid #99f;
+	color: #000;
+	float: left;
+}
+
+.buttonhi {
+	background-color: #cfc;
+	border-color: #9f9;
+}
+
+#seqnum {
+	font-size: 14px;
+	font-weight: none;
+	padding: 20px;
 }
