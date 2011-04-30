@@ -1,19 +1,23 @@
-$def with (similarity, alignA, alignB)
+$def with (similarity, nameA, nameB, alignA, alignB, algorithm, lenA, lenB)
 
 <html>
 <head>
 	<title>Bioinfo</title>
 	<link href="static/styles.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="static/ajax.js"></script>
+	<script type="text/javascript" src="static/highlight.js"></script>
 </head>
-<body>
+<body onload="init()">
 	<div id="results">
-		<p class="header">Results</p>
-		<p>Alignment A:</p>
-		<pre>$alignA</pre>
-		<p>Alignment B:</p>
-		<pre>$alignB</pre>
+		<p class="header">Results of $algorithm</p>
+		<p class="align">Alignment for $nameA</p>
+		<pre class="seq">$alignA</pre>
+		<p class="length">Length: $lenA</p>
+		<p class="align">Alignment for $nameB</p>
+		<pre class="seq">$alignB</pre>
+		<p class="length">Length: $lenB</p>
 		<p>They had a homological similarity of:</p>
-		<pre>$similarity</pre>
+		<pre class="result">$similarity</pre>
 	</div>
 </body>
 </html>
