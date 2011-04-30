@@ -250,6 +250,11 @@ void UserInterface::Open(string data1, string data2)
 	return;
 }
 
+void UserInterface::SetGap(int penalty)
+{
+
+}
+
 void UserInterface::Quit()
 {
 	cout<<"Quiting"<<endl;

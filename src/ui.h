@@ -1,5 +1,7 @@
-
 #include "seq.h"
+
+//Safely declare sequence so as to avoid potential problems compiling.
+class Sequence;
 
 class UserInterface
 {
@@ -26,5 +28,6 @@ public:
 	void Quit();
 	void Options();
 	void start();
+	void SetGap(int);
 };
 
