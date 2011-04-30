@@ -1,7 +1,5 @@
-//#ifndef __NEEDLEMAN_H
-//#define __NEEDLEMAN_H
-
-//#include "algorithm.h"
+#ifndef __NEEDLEMAN_H
+#define __NEEDLEMAN_H
 
 #include <vector>
 #include <iostream>
@@ -22,8 +20,8 @@ class NeedlemanWunsch {
 	void traceitback();
 
 protected:
-	vector<char> seq1aligned; // DNA sequence 1 aligned
-	vector<char> seq2aligned; // DNA sequence 2 aligned
+	//vector<char> seq1aligned; // DNA sequence 1 aligned
+	//vector<char> seq2aligned; // DNA sequence 2 aligned
 
 	void setScoringMatrix(int input[4][4]);
 
@@ -33,5 +31,8 @@ public:
 	void align();
 	void printTracer();
 	void printScores();
+
+	vector<char> seq1aligned; // DNA sequence 1 aligned
+	vector<char> seq2aligned; // DNA sequence 2 aligned
 };
-//#endif
+#endif

@@ -59,11 +59,13 @@ void NeedlemanWunsch::printIt() {
 	for(int i = 0; i < seq1aligned.size(); i++)
 		cout << seq1aligned[i];
 
+	cout<<endl;
 	cout << endl;
 	for(int i = 0; i < seq2aligned.size(); i++)
 		cout << seq2aligned[i];
 
 }
+
 
 
 /*! Set scoring matrix method
@@ -257,10 +259,6 @@ void NeedlemanWunsch::traceitback() {
 		}
 
 	} // End traceback loop
-
-
-
-
 
 } // End traceback method
 
