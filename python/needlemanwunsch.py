@@ -79,7 +79,6 @@ class NeedlemanWunsch:
 	# Similarity
 	def homology(self):
 		lenA = len(self.A)
-		print(lenA)
 		lenB = len(self.B)
 		sim1 = ""
 		sim2 = ""
