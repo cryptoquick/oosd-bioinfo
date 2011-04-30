@@ -1,33 +1,35 @@
 #!/usr/bin/env python
 
+from python.needlemanwunsch import NeedlemanWunsch
+from python.load import readfiles
 from subprocess import *
 from buzhug import Base
 import glob, argparse, web
 
-fasta_files = glob.glob(('./fasta_data/*'))
-seqs = {}
+biocpp = False
 db = []
-
-# Read & Format.
-def readfiles():
-	for file_name in fasta_files:
-		f = open(file_name, "r")
-		flines = f.readlines()
-		seq = ""
-		name = ""
-		for el in flines[1:]:
-			seq += el.strip()
-		for el in flines[:1]:
-			name = el.split('|')[3]
-		if (seq != ''):
-			seqs[name[:6]] = seq
-		f.close()
+#seqs = {} # to be deprecated
 
 ### Bioinformatics
 
-def callbio(seq1, seq2):
-	output = Popen(["./bioinfo", "-nm", seqs[seq1], seqs[seq2]], stdout=PIPE).communicate()[0]
-	return output
+def callbio(seqs, name1, name2):
+	print(seqs)
+	seq1 = seqs[name1] # db here
+	seq2 = seqs[name2]
+	
+	results = {}
+	
+	if biocpp:
+		output = Popen(["./bioinfo", "-nm", seq1, seq2], stdout=PIPE).communicate()[0]
+		# process output into results here
+	else:
+		nw = NeedlemanWunsch(seq1, seq2)
+		nw.align()
+		results['similarity'] = nw.homology()
+		results['alignA'] = nw.A
+		results['alignB'] = nw.B
+	
+	return results
 
 ### Database
 
@@ -52,12 +54,14 @@ urls = (
 #	'/seq', 'seq'
 )
 
+render = web.template.render('templates/')
+
 class main:
 	def GET(self):
-		readfiles()
-		out = callbio("M90848", "M90855")
-		message = "Welcome to bioinfo!\nHere's your output:\n" + out
-		return message
+		seqs = readfiles()
+		results = callbio(seqs, "M90848", "M90855")
+		#message = "Welcome to bioinfo!\nHere's your output:\n" + out
+		return render.index(results['similarity'], results['alignA'], results['alignB'])
 
 """
 class seq:
