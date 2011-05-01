@@ -5,3 +5,5 @@ syntax: glob
 *~
 bioinfo
 .DS_Store
+.metadata
+File

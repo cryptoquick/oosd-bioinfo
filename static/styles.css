@@ -35,6 +35,8 @@ p, pre {margin: 10px;}
 	background-color: #eee;
 	border: dashed #000 1px;
 	padding: 5px;
+	word-wrap: break-word;
+	overflow: hidden;
 }
 
 .align {
