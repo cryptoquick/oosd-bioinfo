@@ -23,10 +23,26 @@ function highlight(diffs) {
 		
 		last = diffarr[i];
 	}
-	
+	// Get the last bit.
 	newA += oldA.substring(last+1, oldA.length);
 	newB += oldB.substring(last+1, oldB.length);
 	
+	/* For formatting break-lines into strings...
+	lenA = newA.length;
+	spot = 0;
+	formA = "";
+	// Format to 80 characters wide.
+	while(lenA > 80) {
+		formA += newA.substr(spot, 80 + spot);
+		formA += '<br>';
+		spot += 80;
+		lenA -= 80;
+	}
+	
+	// Get the last bit.
+	formA += newA.substr(spot, lenA - spot);
+	*/
+	// Replace the text.
 	elA.innerHTML = newA;
 	elB.innerHTML = newB;
 }

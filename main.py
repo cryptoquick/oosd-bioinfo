@@ -6,6 +6,9 @@ from subprocess import *
 from buzhug import Base
 import glob, argparse, web, json
 
+# Prevents internal server errors in FastCGI.
+print("Content-type: text/html\n")
+
 biocpp = False
 db = []
 results = {}
@@ -13,18 +16,21 @@ results = {}
 
 ### Bioinformatics
 class Bio:
-	def __init__(self, algorithm):
+	def __init__(self):
 		self.results = {}
 		self.seqs = []
 		self.name = []
-		self.algorithm = algorithm
+		self.algorithm = ""
 		self.error = ""
 	
 	def addseq(self, seqname):
 		self.name.append(seqname)
 	
 	def nw(self):
-		if len(self.name) > 0:
+		seq1 = ""
+		seq2 = ""
+		if len(self.name) == 2:
+			print(self.name)
 			seq1 = self.seqs[self.name[0]] # db here
 			seq2 = self.seqs[self.name[1]]
 		elif len(self.name) > 2:
@@ -49,18 +55,16 @@ class Bio:
 
 ### Web Interface
 
-#print("Content-type: text/html\n")
-
 urls = (
 	'/', 'main',
-	'/', 'nw',
+	'/nw', 'nw',
 	'/diffs', 'diffs',
 	'/seqs', 'seqs'
 )
 
 render = web.template.render('templates/')
 
-bio = Bio("Needleman-Wunsch")
+bio = Bio()
 bio.seqs = readfiles()
 
 class main:
@@ -68,16 +72,18 @@ class main:
 		return render.index()
 
 class nw:
-	def POST(self):
-		if bio.algorithm == "Needleman-Wunsch":
-			bio.nw()
+	def GET(self):
+		bio.algorithm = "Needleman-Wunsch"
 		
-		seqparms = web.input()
-		bio.addseq(seqparms[0])
-		bio.addseq(seqparms[1])
-	#	bio.addseq("M90848")
-	#	bio.addseq("M90855")
-		#message = "Welcome to bioinfo!\nHere's your output:\n" + out
+		# Get the sequence input from main page.
+		urlargs = web.input()
+		bio.addseq(str(urlargs['s1']))
+		bio.addseq(str(urlargs['s2']))
+		
+		# Align.
+		bio.nw()
+		
+		# If no errors and alignment is done, render to template.
 		if bio.nw.done and bio.error == "":
 			out = render.nw( \
 				bio.results['similarity'],
@@ -88,6 +94,7 @@ class nw:
 				bio.algorithm,
 				len(bio.nw.seq1),
 				len(bio.nw.seq2))
+		# Else, print out the error.
 		else:
 			return bio.error
 		return out
@@ -103,6 +110,7 @@ class seqs:
 # Run web app.
 if __name__ == "__main__":
 	app = web.application(urls, globals())
+	#application = app.wsgifunc()
 	app.run()
 
 #db.close()
