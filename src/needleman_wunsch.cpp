@@ -1,27 +1,22 @@
 #include "needleman_wunsch.h"
-#include <iostream>
+#include <vector>
 
 /*! NeedlemanWunsch constructor
  *  Sets gap penalty and sequence set through parameters
  *  Calculates and sets length of sequences
  */
 
-NeedlemanWunsch::NeedlemanWunsch(int gap_penalty, vector<char> s1, vector<char> s2) {
-	g = gap_penalty;
-	m = s1.size()+1;
-	n = s2.size()+1;
-
-	// Copy vectors
+Needleman::Needleman(vector<char> s1, vector<char> s2, int gap) {
+	// Set attributes
 	seq1 = s1;
 	seq2 = s2;
+	g = gap;
+	l1 = s1.size();
+	l2 = s2.size();
 
-	//Added so the program can work, forces z at beginning
-	seq1.insert(seq1.begin(), 'Z');
-	seq2.insert(seq2.begin(), 'Z');
-
-	// Set default scoring matrix to one for match, 0 for mismatch
-	for(int i = 0; i < 4; i++) { // Row loop
-		for(int j = 0; j < 4; j++) { // Column loop
+	// Set default scoring matrix, match = 1, mismatch = 0
+	for(int i = 0; i < 4; i++) {
+		for(int j = 0; j < 4; j++) {
 			if(i == j)
 				sMatrix[i][j] = 1;
 			else
@@ -30,35 +25,170 @@ NeedlemanWunsch::NeedlemanWunsch(int gap_penalty, vector<char> s1, vector<char> 
 	}
 }
 
-
-
-void NeedlemanWunsch::printScores() {
-	for(int i = 0; i < (n + 1); i++) { // Row loop
-			for(int j = 0; j < (m + 1); j++) {
-				cout << scores[i][j] << " ";
-			}
-			cout << endl;
-		}
-	cout << endl;
-
+// Override default scoring matrix with parameter, ACGT x ACGT
+void Needleman::setScoringMatrix(int s[4][4]) {
+	for(int i = 0; i < 4; i++) {
+		for(int j = 0; j < 4; j++)
+			sMatrix[i][j] = s[i][j];
+	}
 }
 
-void NeedlemanWunsch::printTracer() {
-	for(int i = 0; i < (n + 1); i++) { // Row loop
-		for(int j = 0; j < (m + 1); j++) {
-			cout << traceback[i][j] << " ";
-		}
+
+// Initialize scoring matrix based on gap penalty
+void Needleman::initialize() {
+	scores = vector<vector <int> > ((l2 + 1), vector < int> (l1 + 1));
+
+	for(int y = 0; y < l2 + 1; y++) { // Row loop
+		for(int x = 0; x < l1 + 1 ; x++) { // Column loop
+			if(y == 0) {
+				if(x == 0)
+					scores[y][x] = 0;
+				else
+					scores[y][x] = scores[y][x-1] + g;
+			}
+			else if(x == 0)
+				scores[y][x] = scores[y-1][x] + g;
+		} // End column
+	} // End row
+
+} // End initialize
+
+
+// Fill the scoring matrix
+void Needleman::fill() {
+
+	for(int y = 1; y < l2 + 1; y++) { // Row loop
+		for(int x = 1; x < l1 + 1; x++) { // Column loop
+			int result, d, u, l, s, i, f;
+
+			// Fetch match score
+			switch(seq1[x -1]) {
+			case 'a': case 'A': i = 0; break;
+			case 'c': case 'C': i = 1; break;
+			case 'g': case 'G': i = 2; break;
+			case 't': case 'T': i = 3; break;
+			}
+			switch(seq2[y - 1]) {
+			case 'a': case 'A': f = 0; break;
+			case 'c': case 'C': f = 1; break;
+			case 'g': case 'G': f = 2; break;
+			case 't': case 'T': f = 3; break;
+			}
+			s = sMatrix[i][f];
+
+			// Calculate possible scores
+			d = scores[y-1][x-1] + s; // diag
+			u = scores[y-1][x] + g; // up
+			l = scores[y][x-1] + g; // left
+
+			// Determine score
+			if(d >= u && d >= l) result = d;
+			else if(u >= d && u >= l) result = u;
+			else result = l;
+
+			scores[y][x] = result;
+
+		} // End column
+	} // End row
+
+
+} // End initialize
+
+
+void Needleman::printScores() {
+
+	for(int y = -1; y < l2 + 1; y++) { // Row loop
+		for(int x = -1; x < l1 +1; x++) { // Column loop
+
+			if(y == -1) {
+				if(x < 1)
+					cout << "- ";
+				else
+					cout << seq1[x-1] << " ";
+			}
+			else if(x == -1) {
+				if(y == 0)
+					cout << "- ";
+				else
+					cout << seq2[y-1] << " ";
+			}
+			else
+				cout << scores[y][x] << " ";
+		} // End column
+
 		cout << endl;
+	} // End row
+
+	for(int i = 0; i < aligned1.size(); i++)
+		cout << aligned1[i];
+	cout << endl;
+	for(int i = 0; i < aligned2.size(); i++)
+		cout << aligned2[i];
+	cout << endl;
+}
+
+
+// Trace back through the scoring matrix and align sequences
+void Needleman::trace() {
+	int pos1 = l1 - 1;
+	int pos2 = l2 - 1;
+	int posX = l1;
+	int posY = l2;
+	int u, d, l, diff;
+
+	// Perform trace
+	while(posY > 0 && posX > 0) {
+		// Get directional scores
+		d = scores[posY-1][posX-1]; // diag
+		u = scores[posY-1][posX]; // up
+		l = scores[posY][posX-1]; // left
+
+		// Diagonal - letters align
+		if(d >= u && d >= l) {
+			aligned1.insert(aligned1.begin(), seq1[pos1--]);
+			aligned2.insert(aligned2.begin(), seq2[pos2--]);
+			posY--; posX--;
+		}
+
+		// Up - gap in sequence 1
+		else if(u >= d && u >= l) {
+			aligned1.insert(aligned1.begin(), '-');
+			aligned2.insert(aligned2.begin(), seq2[pos2--]);
+			posY--;
+		}
+
+		// Left - gap in sequence 2
+		else {
+			aligned1.insert(aligned1.begin(), seq1[pos1--]);
+			aligned2.insert(aligned2.begin(), '-');
+			posX--;
+		}
+	} // End trace
+
+	// Add extra characters
+	while(pos1 > -1)
+		aligned1.insert(aligned1.begin(), seq1[pos1--]);
+	while(pos2 > -1)
+		aligned2.insert(aligned2.begin(), seq2[pos2--]);
+
+	diff = aligned1.size() - aligned2.size();
+	if(diff > 0) {
+		for(int i = 0; i < diff; i++)
+			aligned2.insert(aligned2.begin(), '-');
+	}
+	else if(diff < 0) {
+		for(int i = 0; i > diff; i--)
+			aligned1.insert(aligned1.begin(), '-');
 	}
 
 }
 
 
-void NeedlemanWunsch::printIt() {
-
-	for(int i = 0; i < seq1aligned.size(); i++)
-		cout << seq1aligned[i];
-
+void Needleman::align() {
+	initialize();
+	fill();
+	trace();
+}
 	cout<<endl;
 	cout << endl;
 	for(int i = 0; i < seq2aligned.size(); i++)
@@ -68,206 +198,3 @@ void NeedlemanWunsch::printIt() {
 
 
 
-/*! Set scoring matrix method
- *  Takes an 4 x 4 array of ints as parameter and sets them to scoring matrix
- */
-void NeedlemanWunsch::setScoringMatrix(int input[4][4]) {
-	for(int i = 0; i < 4; i++) { // Column loop
-		for(int j = 0; j < 4; j++) { // Row loop
-			sMatrix[i][j] = input[i][j];
-		}
-	}
-}
-
-/*! Initialise method
- * Sets up score and traceback matrices
- */
-
-void NeedlemanWunsch::initialize() {
-	// Set sizes of matrices based on sequence lengths
-	scores = vector<vector <int> >((n + 1), vector<int> (m + 1) );
-	traceback = vector<vector <int> >((n + 1), vector<int> (m + 1));
-
-	// Set first row and column of matrices based on gap penalty
-	for(int i = 0; i < (m + 1); i++) {
-		if(i == 0) { // First cell
-			scores[0][i] = 0;
-			traceback[0][i] = 0;
-		}
-		else {
-			scores[0][i] = scores[0][i-1] + g;
-			traceback[0][i] = 3;
-		}
-	}
-
-	for(int i = 1; i < (n + 1); i++) {
-		scores[i][0] = scores[i-1][0] + g;
-		traceback[i][0] = 2;
-	}
-}
-
-/*! Fill method
- *  Iterates through sequences, filling matrices via Needleman algorithm
- */
-
-void NeedlemanWunsch::fill() {
-
-
-	for(int i = 1; i < (n + 1); i++) { // Column loop
-		for(int j = 1; j < (m + 1); j++) { // Row loop
-			int results[3];
-			int s, x, y;
-
-			// Reference the scoring matrix to get s value
-			switch(seq1[j]) {
-				case 'g':
-				case 'G': x = 0; break;
-				case 'a':
-				case 'A': x = 1; break;
-				case 't':
-				case 'T': x = 2; break;
-				case 'c':
-				case 'C': x = 3; break;
-			}
-			switch(seq2[i]) {
-				case 'g':
-				case 'G': y = 0; break;
-				case 'a':
-				case 'A': y = 1; break;
-				case 't':
-				case 'T': y = 2; break;
-				case 'c':
-				case 'C': y = 3; break;
-			}
-			s = sMatrix[x][y];
-
-			// Calculate diagonal, up and left values
-			results[0] = scores[i-1][j-1] + s;
-			results[1] = scores[i-1][j] + g;
-			results[2] = scores[i][j-1] + g;
-
-			// Check that results aren't equal
-			if(results[0] != results[1] && results[0] != results[2]
-			        && results[1] != results[2]) {
-				// Check diagonal
-				if(results[0] > results[1] && results[0] > results[2]) {
-					scores[i][j] = results[0];
-					traceback[i][j] = 1;
-				}
-				// Check up
-				else if(results[1] > results[0] && results[1] > results[2]) {
-					scores[i][j] = results[1];
-					traceback[i][j] = 2;
-				}
-				// Else left
-				else {
-					scores[i][j] = results[2];
-					traceback[i][j] = 3;
-				}
-			} // End if results not equal
-
-			// Equal results
-			else {
-				// Diagonal equals up  - preference for diagonal
-				if(results[0] == results[1]) {
-					if(results[2] > results[0]) {
-						scores[i][j] = results[2];
-						traceback[i][j] = 2;
-					}
-					else {
-						scores[i][j] = results[0];
-						traceback[i][j] = 1;
-					}
-				}
-				// Diagonal equals left - preference for diagonal
-				else if(results[0] == results[2]) {
-					if(results[1] > results[0]) {
-						scores[i][j] = results[1];
-						traceback[i][j] = 3;
-					}
-					else {
-						scores[i][j] = results[0];
-						traceback[i][j] = 1;
-					}
-				}
-				// Up equals left - no preference, default to shorter sequence
-				else if(results[1] == results[2]) {
-					if(results[1] > results[0]) {
-						if(m < n) {
-							scores[i][j] = results[1];
-							traceback[i][j] = 2;
-						}
-						else {
-							scores[i][j] = results[2];
-							traceback[i][j] = 3;
-						}
-					}
-					else {
-						scores[i][j] = results[0];
-						traceback[i][j] = 1;
-					}
-				}
-			} // End equal results
-
-		} // End column loop
-	} // End row loop
-
-} // End fill method
-
-
-/*! Traceback method
- *  Utilizes Needleman-Wunsch traceback application to get sequence alignments
- */
-
-void NeedlemanWunsch::traceitback() {
-
-
-	// Initialize variables for sequence vector and traceback matrix placeholders
-	int seq1_pos = m-1;
-	int seq2_pos = n-1;
-	int trace_x = m-1;
-	int trace_y = n-1;
-
-	// Begin traceback - Loop until first cell is reached, filling in aligned
-	// sequences starting from the back
-	while((trace_x > 0) || (trace_y > 0)) {
-		cout << trace_x << trace_y << endl;
-		// Diagonal - letters aligned
-		if(traceback[trace_y][trace_x] == 1) {
-			seq1aligned.insert(seq1aligned.begin(), seq1[seq1_pos]);
-			seq2aligned.insert(seq2aligned.begin(), seq2[seq2_pos]);
-			seq1_pos--;
-			seq2_pos--;
-			trace_x--;
-			trace_y--;
-		}
-
-		// Left - gap in sequence 2
-		if(traceback[trace_y][trace_x] == 3) {
-			seq1aligned.insert(seq1aligned.begin(), seq1[seq1_pos]);
-			seq2aligned.insert(seq2aligned.begin(), '-');
-			seq1_pos--;
-			trace_x--;
-		}
-
-		// Up - gap in sequence 1
-		if(traceback[trace_y][trace_x] == 2) {
-			seq1aligned.insert(seq1aligned.begin(), '-');
-			seq2aligned.insert(seq2aligned.begin(), seq2[seq2_pos]);
-			seq2_pos--;
-			trace_y--;
-		}
-
-	} // End traceback loop
-
-} // End traceback method
-
-
-/*! Align method
- *  Calls initialise, fill and traceitback methods
- */
-void NeedlemanWunsch::align() {
-	initialize();
-	fill();
-	traceitback();
-}
