@@ -39,24 +39,32 @@ var seq_queue = [];
 
 function seq(seqname) {
 	var el = document.getElementById(seqname);
+	var gobut = document.getElementById("gobut");
 	
-	if (seq_queue.length == 1 && alg == "nw") {
+	if (seq_queue.length == 0 && alg == "nw") {
 		seq_queue.push(seqname);
 		el.className = "buttonhi";
 	}
-	else if (seq_queue.length == 2 && alg == "nw") {
+	else if (seq_queue.length == 1 && alg == "nw") {
 		seq_queue.push(seqname);
-		var gobut = document.getElementById("gobut");
-		gobut.innerText = "Needleman Wunsch: " + seq_queue[0] + ", " + seq_queue[1];
 		el.className = "buttonhi";
+		gobut.innerText = "Needleman Wunsch: " + seq_queue[0] + ", " + seq_queue[1];
+		gobut.href = "/nw?s1=" + seq_queue[0] + "&s2=" + seq_queue[1];
+	}
+	else if (seq_queue.length == 2 && alg == "nw") {
+		while(seq_queue.length > 0) {
+			elid = seq_queue.pop();
+			document.getElementById(elid).className = "button";
+		}
 	}
 	else if (alg == "msa") {
 		seq_queue.push(seqname);
 	}
 	else {
+		gobut.innerText = "Please select sequences.";
 		while(seq_queue.length > 0) {
-			el = seq_queue.pop();
-			el.className = "button";
+			elid = seq_queue.pop();
+			document.getElementById(elid).className = "button";
 		}
 	}
 }

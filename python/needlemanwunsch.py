@@ -102,8 +102,11 @@ class NeedlemanWunsch:
 			else:
 				self.diffs.append(k)
 			k += 1
-			
-		similarity = (float(total) / float(length)) * 100.0
+		
+		if length > 0:
+			similarity = (float(total) / float(length)) * 100.0
+		else:
+			similarity = 0
 		
 		return str("%.2f" % similarity) + "%"
 
