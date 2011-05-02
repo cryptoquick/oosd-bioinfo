@@ -6,7 +6,7 @@
  *  Calculates and sets length of sequences
  */
 
-Needleman::Needleman(vector<char> s1, vector<char> s2, int gap) {
+NeedlemanWunsch::NeedlemanWunsch( int gap, vector<char> s1, vector<char> s2) {
 	// Set attributes
 	seq1 = s1;
 	seq2 = s2;
@@ -26,7 +26,7 @@ Needleman::Needleman(vector<char> s1, vector<char> s2, int gap) {
 }
 
 // Override default scoring matrix with parameter, ACGT x ACGT
-void Needleman::setScoringMatrix(int s[4][4]) {
+void NeedlemanWunsch::setScoringMatrix(int s[4][4]) {
 	for(int i = 0; i < 4; i++) {
 		for(int j = 0; j < 4; j++)
 			sMatrix[i][j] = s[i][j];
@@ -35,7 +35,7 @@ void Needleman::setScoringMatrix(int s[4][4]) {
 
 
 // Initialize scoring matrix based on gap penalty
-void Needleman::initialize() {
+void NeedlemanWunsch::initialize() {
 	scores = vector<vector <int> > ((l2 + 1), vector < int> (l1 + 1));
 
 	for(int y = 0; y < l2 + 1; y++) { // Row loop
@@ -55,7 +55,7 @@ void Needleman::initialize() {
 
 
 // Fill the scoring matrix
-void Needleman::fill() {
+void NeedlemanWunsch::fill() {
 
 	for(int y = 1; y < l2 + 1; y++) { // Row loop
 		for(int x = 1; x < l1 + 1; x++) { // Column loop
@@ -95,7 +95,7 @@ void Needleman::fill() {
 } // End initialize
 
 
-void Needleman::printScores() {
+void NeedlemanWunsch::printScores() {
 
 	for(int y = -1; y < l2 + 1; y++) { // Row loop
 		for(int x = -1; x < l1 +1; x++) { // Column loop
@@ -129,7 +129,7 @@ void Needleman::printScores() {
 
 
 // Trace back through the scoring matrix and align sequences
-void Needleman::trace() {
+void NeedlemanWunsch::trace() {
 	int pos1 = l1 - 1;
 	int pos2 = l2 - 1;
 	int posX = l1;
@@ -184,16 +184,10 @@ void Needleman::trace() {
 }
 
 
-void Needleman::align() {
+void NeedlemanWunsch::align() {
 	initialize();
 	fill();
 	trace();
-}
-	cout<<endl;
-	cout << endl;
-	for(int i = 0; i < seq2aligned.size(); i++)
-		cout << seq2aligned[i];
-
 }
 
 
