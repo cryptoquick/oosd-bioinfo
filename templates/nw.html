@@ -1,23 +1,22 @@
-$def with (similarity, nameA, nameB, alignA, alignB, algorithm, lenA, lenB)
-
+<!doctype html>
 <html>
 <head>
-	<title>Bioinfo</title>
+	<title>Needleman-Wunsch</title>
 	<link href="static/styles.css" rel="stylesheet" type="text/css">
 	<script type="text/javascript" src="static/ajax.js"></script>
 	<script type="text/javascript" src="static/highlight.js"></script>
 </head>
 <body onload="init()">
 	<div id="results">
-		<p class="header">Results of $algorithm</p>
-		<p class="align">Alignment for $nameA</p>
-		<pre id="align0" class="seq">$alignA</pre>
-		<p class="length">Length: $lenA</p>
-		<p class="align">Alignment for $nameB</p>
-		<pre id="align1" class="seq">$alignB</pre>
-		<p class="length">Length: $lenB</p>
+		<p class="header">Results of {{alg}}</p>
+		<p class="align">Alignment for {{name[0]}}</p>
+		<pre id="align0" class="seq">{{results["alignA"]}}</pre>
+		<p class="length">Length: {{lenA}}</p>
+		<p class="align">Alignment for {{name[1]}}</p>
+		<pre id="align1" class="seq">{{results["alignB"]}}</pre>
+		<p class="length">Length: {{lenB}}</p>
 		<p>They had a homological similarity of:</p>
-		<pre class="result">$similarity</pre>
+		<pre class="result">{{results["similarity"]}}</pre>
 	</div>
 </body>
 </html>
