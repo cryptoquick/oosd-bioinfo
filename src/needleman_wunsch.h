@@ -18,15 +18,13 @@ class NeedlemanWunsch {
 	void fill();
 	void trace();
 
-protected:
+public:
+	NeedlemanWunsch( int gap, vector<char> s1, vector<char> s2);
+	void align();
 	vector <char> aligned1;
 	vector <char> aligned2;
 
 	void setScoringMatrix(int s[4][4]);
-
-public:
-	NeedlemanWunsch( int gap, vector<char> s1, vector<char> s2);
-	void align();
 };
 
 

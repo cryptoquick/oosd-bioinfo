@@ -95,39 +95,6 @@ void NeedlemanWunsch::fill() {
 } // End initialize
 
 
-void NeedlemanWunsch::printScores() {
-
-	for(int y = -1; y < l2 + 1; y++) { // Row loop
-		for(int x = -1; x < l1 +1; x++) { // Column loop
-
-			if(y == -1) {
-				if(x < 1)
-					cout << "- ";
-				else
-					cout << seq1[x-1] << " ";
-			}
-			else if(x == -1) {
-				if(y == 0)
-					cout << "- ";
-				else
-					cout << seq2[y-1] << " ";
-			}
-			else
-				cout << scores[y][x] << " ";
-		} // End column
-
-		cout << endl;
-	} // End row
-
-	for(int i = 0; i < aligned1.size(); i++)
-		cout << aligned1[i];
-	cout << endl;
-	for(int i = 0; i < aligned2.size(); i++)
-		cout << aligned2[i];
-	cout << endl;
-}
-
-
 // Trace back through the scoring matrix and align sequences
 void NeedlemanWunsch::trace() {
 	int pos1 = l1 - 1;
