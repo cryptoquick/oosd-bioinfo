@@ -4,14 +4,19 @@ from python.needlemanwunsch import NeedlemanWunsch
 from python.load import readfiles
 from subprocess import *
 from buzhug import Base
-import glob, argparse, web, json
+import glob, argparse, json
+from flask import Flask, render_template, request
+
+# Is this application running on a server?
+server = False
 
 # Prevents internal server errors in FastCGI.
-print("Content-type: text/html\n")
+# print("Content-type: text/html\n")
 
+## TODO: Implement these elsewhere and do them better
 biocpp = False
 db = []
-results = {}
+#results = {}
 #seqs = {} # to be deprecated
 
 ### Bioinformatics
@@ -37,7 +42,8 @@ class Bio:
 			self.error = "Too many sequences for Needleman-Wunsch."
 		else:
 			self.error = "Too few sequences for Needleman-Wunsch."
-	
+		
+		# Use bioinfo binary, or native Python implementation?
 		if biocpp:
 			output = Popen(["./bioinfo", "-nm", seq1, seq2], stdout=PIPE).communicate()[0]
 			# process output into results here
@@ -55,62 +61,73 @@ class Bio:
 
 ### Web Interface
 
-urls = (
-	'/', 'main',
-	'/nw', 'nw',
-	'/diffs', 'diffs',
-	'/seqs', 'seqs'
-)
-
-render = web.template.render('templates/')
-
 bio = Bio()
 bio.seqs = readfiles()
 
-class main:
-	def GET(self):
-		return render.index()
+#urls = (
+#	'/', 'main',
+#	'/nw', 'nw',
+#	'/diffs', 'diffs',
+#	'/seqs', 'seqs'
+#)
 
-class nw:
-	def GET(self):
-		bio.algorithm = "Needleman-Wunsch"
-		
-		# Get the sequence input from main page.
-		urlargs = web.input()
-		bio.addseq(str(urlargs['s1']))
-		bio.addseq(str(urlargs['s2']))
-		
-		# Align.
-		bio.nw()
-		
-		# If no errors and alignment is done, render to template.
-		if bio.nw.done and bio.error == "":
-			out = render.nw( \
-				bio.results['similarity'],
-				bio.name[0],
-				bio.name[1],
-				bio.results['alignA'],
-				bio.results['alignB'],
-				bio.algorithm,
-				len(bio.nw.seq1),
-				len(bio.nw.seq2))
-		# Else, print out the error.
-		else:
-			return bio.error
-		return out
+app = Flask(__name__)
 
-class diffs:
-	def POST(self):
+@app.route("/")
+def main():
+	return render_template('index.html')
+
+@app.route("/nw")
+def nw():
+	bio.algorithm = "Needleman-Wunsch"
+	
+	# Get the sequence input from main page.
+#	if request.method == "POST":
+	bio.addseq(str(request.args['s1']))
+	bio.addseq(str(request.args['s2']))
+	
+	# Align.
+	bio.nw()
+	
+	# If no errors and alignment is done, render to template.
+	if bio.nw.done and bio.error == "":
+		return render_template('index.html', \
+			results = bio.results,
+			name = bio.name,
+			alg = bio.algorithm,
+			lenA = len(bio.nw.seq1),
+			lenB = len(bio.nw.seq2))
+	# $def with (similarity, nameA, nameB, alignA, alignB, algorithm, lenA, lenB)
+	#	out = render.nw( \
+	#		bio.results['similarity'],
+	#		bio.name[0],
+	#		bio.name[1],
+	#		bio.results['alignA'],
+	#		bio.results['alignB'],
+	#		bio.algorithm,
+	#		len(bio.nw.seq1),
+	#		len(bio.nw.seq2))
+	# Else, print out the error.
+	else:
+		return bio.error
+
+@app.route("/diffs", methods=['POST'])
+def diffs():
+	if request.method == 'POST':
 		return json.dumps(bio.results['diffs'])
 
-class seqs:
-	def POST(self):
+@app.route("/seqs", methods=['POST'])
+def seqs():
+	if request.method == 'POST':
 		return json.dumps(sorted([s[0] for s in bio.seqs.iteritems()]))
 
 # Run web app.
 if __name__ == "__main__":
-	app = web.application(urls, globals())
-	#application = app.wsgifunc()
-	app.run()
+	if server:
+		print('bla')
+	#	from werkzeug.contrib.fixers import LighttpdCGIRootFix
+	#	app.wsgi_app = LighttpdCGIRootFix(app.wsgi_app)
+	else:
+		app.run(debug=True)
 
 #db.close()
