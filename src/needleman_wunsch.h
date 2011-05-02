@@ -4,8 +4,6 @@
 #include <vector>
 using namespace std;
 
-
-
 class NeedlemanWunsch {
 	int g;
 	int l1, l2;

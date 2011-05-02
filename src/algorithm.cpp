@@ -1,8 +1,6 @@
 #include "algorithm.h"
 #include <vector>
 
-
-
 //#include <string>
 
 Algorithm::Algorithm() {
@@ -12,7 +10,7 @@ Algorithm::Algorithm() {
 Algorithm::~Algorithm(){
 	if(nw)
 	{
-		//delete nw;
+		delete nw;
 	}
 }
 

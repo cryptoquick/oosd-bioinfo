@@ -1,5 +1,5 @@
-bioinfo: src/main.o src/ui.o src/file.o src/seq.o src/needleman_wunsch.o src/smith.o
-	g++ -o bioinfo src/main.o src/ui.o src/file.o src/seq.o src/needleman_wunsch.o src/smith.o
+bioinfo: src/main.o src/ui.o src/file.o src/seq.o src/needleman_wunsch.o src/smith.o src/algorithm.o
+	g++ -o bioinfo src/main.o src/ui.o src/file.o src/seq.o src/needleman_wunsch.o src/smith.o src/algorithm.o
 
 main.o: src/main.cpp
 	g++ -Wall -c src/main.cpp
@@ -12,6 +12,9 @@ file.o: src/file.cpp src/file.h
 
 seq.o: src/seq.cpp src/seq.h
 	g++ -Wall -c src/seq.cpp src/seq.h
+	
+algorithm.o: src/algorithm.cpp src/algorithm.h
+	g++ -Wall -c src/algorithm.cpp src/algorithm.h
 
 needleman_wunsch.o:
 	g++ -Wall -c src/needleman_wunsch.cpp src/needleman_wunsch.h
