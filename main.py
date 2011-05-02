@@ -16,8 +16,6 @@ server = False
 ## TODO: Implement these elsewhere and do them better
 biocpp = False
 db = []
-#results = {}
-#seqs = {} # to be deprecated
 
 ### Bioinformatics
 class Bio:
@@ -32,7 +30,6 @@ class Bio:
 	def addseq(self, seqname):
 		self.name.append(seqname)
 		self.seq.append(self.seqs[seqname]) # db here
-	#	print(self.name)
 	
 	def clearseq(self):
 		self.name = []
@@ -61,15 +58,8 @@ class Bio:
 
 ### Web Interface
 
-bio = Bio()
-bio.seqs = readfiles()
-
-#urls = (
-#	'/', 'main',
-#	'/nw', 'nw',
-#	'/diffs', 'diffs',
-#	'/seqs', 'seqs'
-#)
+bio = Bio() # TODO make more modular / OO
+bio.seqs = readfiles() # TODO database
 
 app = Flask(__name__)
 
@@ -91,38 +81,33 @@ def nw():
 	
 	# Format alignment strings for output.
 	alignments = []
-	numits = 0
+	
 	for result in bio.results['alignments']:
-	#	print result
 		wrapped = textwrap.wrap(result, 80)
 		formatted = []
 		linenum = 1
 		indices = bio.results['diffs']
-		numits += 1
 		for line in wrapped:
 			format = ""
 			lastindex = 0
-		#	print(line)
-		#	while len(indices) > 0:
 			for index in indices:
-			#	index = indices.pop(0)
-			#	print(index)
-			#	if index > 80 * linenum - 1 and index < 
-				if index >= linenum * 80:
-					linenum += 1
+				if index >= linenum * 80: # this area has problems......
+					indx = math.floor(index / 80) # In case there are two or more lines here.
+					print(str(indx) + "indx")
+					while indx > 0:
+						linenum += 1 # not robust enough! fails on M90848, M90907
+						indx -= 1
 					break
 				else:
 					i = index - 80 * (linenum - 1)
-					if i < 80 and i > 0:
+					if i < 80 and i >= 0:
+						print(lastindex)
+						print(i)
 						format += line[lastindex:i] + '<span class="hred">' + line[i] + '</span>'
 						lastindex = i + 1
-		#	print(lastindex)
 			format += line[lastindex:]
 			formatted.append(format)
-		#	print(format)
 		alignments.append('<br>'.join(formatted))
-	
-	print(numits)
 	
 	# If no errors and alignment is done, render to template.
 	if bio.alg.done and bio.error == "":
@@ -134,17 +119,6 @@ def nw():
 			formB = Markup(alignments[1]),
 			lenA = len(bio.seq[0]),
 			lenB = len(bio.seq[1]))
-	# $def with (similarity, nameA, nameB, alignA, alignB, algorithm, lenA, lenB)
-	#	out = render.nw( \
-	#		bio.results['similarity'],
-	#		bio.name[0],
-	#		bio.name[1],
-	#		bio.results['alignA'],
-	#		bio.results['alignB'],
-	#		bio.algorithm,
-	#		len(bio.nw.seq1),
-	#		len(bio.nw.seq2))
-	# Else, print out the error.
 	else:
 		return bio.error
 
