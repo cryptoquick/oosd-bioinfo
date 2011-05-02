@@ -6,7 +6,7 @@ using namespace std;
 
 
 
-class Needleman {
+class NeedlemanWunsch {
 	int g;
 	int l1, l2;
 	int sMatrix[4][4]; // ACGT x ACGT
@@ -25,7 +25,7 @@ protected:
 	void setScoringMatrix(int s[4][4]);
 
 public:
-	Needleman(vector<char> s1, vector<char> s2, int gap);
+	NeedlemanWunsch( int gap, vector<char> s1, vector<char> s2);
 	void align();
 };
 
