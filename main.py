@@ -4,8 +4,8 @@ from python.needlemanwunsch import NeedlemanWunsch
 from python.load import readfiles
 from subprocess import *
 from buzhug import Base
-import glob, argparse, json
-from flask import Flask, render_template, request
+import glob, argparse, json, textwrap, math
+from flask import Flask, render_template, request, Markup
 
 # Is this application running on a server?
 server = False
@@ -24,36 +24,37 @@ class Bio:
 	def __init__(self):
 		self.results = {}
 		self.seqs = []
+		self.seq = []
 		self.name = []
 		self.algorithm = ""
 		self.error = ""
 	
 	def addseq(self, seqname):
 		self.name.append(seqname)
+		self.seq.append(self.seqs[seqname]) # db here
+		print(self.name)
+	
+	def clearseq(self):
+		self.name = []
+		self.seq = []
 	
 	def nw(self):
-		seq1 = ""
-		seq2 = ""
-		if len(self.name) == 2:
-			print(self.name)
-			seq1 = self.seqs[self.name[0]] # db here
-			seq2 = self.seqs[self.name[1]]
-		elif len(self.name) > 2:
+		if len(self.name) > 2:
 			self.error = "Too many sequences for Needleman-Wunsch."
-		else:
+		elif len(self.name) < 2:
 			self.error = "Too few sequences for Needleman-Wunsch."
 		
 		# Use bioinfo binary, or native Python implementation?
 		if biocpp:
-			output = Popen(["./bioinfo", "-nm", seq1, seq2], stdout=PIPE).communicate()[0]
+			output = Popen(["./bioinfo", "-nm", self.seq[0], self.seq[1]], stdout=PIPE).communicate()[0]
 			# process output into results here
 		else:
-			self.nw = NeedlemanWunsch(seq1, seq2)
-			self.nw.align()
-			self.results['similarity'] = self.nw.homology()
-			self.results['alignA'] = self.nw.A
-			self.results['alignB'] = self.nw.B
-			self.results['diffs'] = self.nw.diffs
+			self.alg = NeedlemanWunsch(self.seq[0], self.seq[1])
+			self.alg.align()
+			self.results['similarity'] = self.alg.homology()
+			self.results['alignA'] = self.alg.A
+			self.results['alignB'] = self.alg.B
+			self.results['diffs'] = self.alg.diffs
 
 ### Database
 
@@ -82,21 +83,55 @@ def nw():
 	bio.algorithm = "Needleman-Wunsch"
 	
 	# Get the sequence input from main page.
-#	if request.method == "POST":
+	bio.clearseq()
 	bio.addseq(str(request.args['s1']))
 	bio.addseq(str(request.args['s2']))
 	
 	# Align.
 	bio.nw()
 	
+	# Format alignment strings for output.
+	alignA = '<br>'.join(textwrap.wrap(bio.results["alignA"], 80))
+	alignB = '<br>'.join(textwrap.wrap(bio.results["alignB"], 80))
+	formA = ""
+	formB = ""
+	newdiffs = []
+	
+	for index in bio.results['diffs']:
+	#	line = math.floor(index / 80)
+	#	if line >= 1:
+		if index > 80:
+			newdiffs.append(index + 4)
+		else:
+			newdiffs.append(index)
+	
+	print(newdiffs)
+	print(bio.results['diffs'])
+	
+	lastindex = 0
+	for index in newdiffs:
+		formA += alignA[lastindex:index] + '<span class="hred">' + alignA[index] + '</span>'
+		formB += alignB[lastindex:index] + '<span class="hred">' + alignB[index] + '</span>'
+		lastindex = index + 1
+	
+	formA += alignA[lastindex:]
+	formB += alignB[lastindex:]
+	
+#	[x += 4 * i for x in bio.results['diffs'] if floor(x / 80) > ]
+	
+#	for index in :
+#		formA += 
+	
 	# If no errors and alignment is done, render to template.
-	if bio.nw.done and bio.error == "":
-		return render_template('index.html', \
+	if bio.alg.done and bio.error == "":
+		return render_template('nw.html', \
 			results = bio.results,
 			name = bio.name,
 			alg = bio.algorithm,
-			lenA = len(bio.nw.seq1),
-			lenB = len(bio.nw.seq2))
+			formA = Markup(formA),
+			formB = Markup(formB),
+			lenA = len(bio.seq[0]),
+			lenB = len(bio.seq[1]))
 	# $def with (similarity, nameA, nameB, alignA, alignB, algorithm, lenA, lenB)
 	#	out = render.nw( \
 	#		bio.results['similarity'],
