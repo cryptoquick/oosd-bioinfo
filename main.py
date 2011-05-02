@@ -32,7 +32,7 @@ class Bio:
 	def addseq(self, seqname):
 		self.name.append(seqname)
 		self.seq.append(self.seqs[seqname]) # db here
-		print(self.name)
+	#	print(self.name)
 	
 	def clearseq(self):
 		self.name = []
@@ -52,8 +52,7 @@ class Bio:
 			self.alg = NeedlemanWunsch(self.seq[0], self.seq[1])
 			self.alg.align()
 			self.results['similarity'] = self.alg.homology()
-			self.results['alignA'] = self.alg.A
-			self.results['alignB'] = self.alg.B
+			self.results['alignments'] = [self.alg.A, self.alg.B]
 			self.results['diffs'] = self.alg.diffs
 
 ### Database
@@ -91,36 +90,39 @@ def nw():
 	bio.nw()
 	
 	# Format alignment strings for output.
-	alignA = '<br>'.join(textwrap.wrap(bio.results["alignA"], 80))
-	alignB = '<br>'.join(textwrap.wrap(bio.results["alignB"], 80))
-	formA = ""
-	formB = ""
-	newdiffs = []
+	alignments = []
+	numits = 0
+	for result in bio.results['alignments']:
+	#	print result
+		wrapped = textwrap.wrap(result, 80)
+		formatted = []
+		linenum = 1
+		indices = bio.results['diffs']
+		numits += 1
+		for line in wrapped:
+			format = ""
+			lastindex = 0
+		#	print(line)
+		#	while len(indices) > 0:
+			for index in indices:
+			#	index = indices.pop(0)
+			#	print(index)
+			#	if index > 80 * linenum - 1 and index < 
+				if index >= linenum * 80:
+					linenum += 1
+					break
+				else:
+					i = index - 80 * (linenum - 1)
+					if i < 80 and i > 0:
+						format += line[lastindex:i] + '<span class="hred">' + line[i] + '</span>'
+						lastindex = i + 1
+		#	print(lastindex)
+			format += line[lastindex:]
+			formatted.append(format)
+		#	print(format)
+		alignments.append('<br>'.join(formatted))
 	
-	for index in bio.results['diffs']:
-	#	line = math.floor(index / 80)
-	#	if line >= 1:
-		if index > 80:
-			newdiffs.append(index + 4)
-		else:
-			newdiffs.append(index)
-	
-	print(newdiffs)
-	print(bio.results['diffs'])
-	
-	lastindex = 0
-	for index in newdiffs:
-		formA += alignA[lastindex:index] + '<span class="hred">' + alignA[index] + '</span>'
-		formB += alignB[lastindex:index] + '<span class="hred">' + alignB[index] + '</span>'
-		lastindex = index + 1
-	
-	formA += alignA[lastindex:]
-	formB += alignB[lastindex:]
-	
-#	[x += 4 * i for x in bio.results['diffs'] if floor(x / 80) > ]
-	
-#	for index in :
-#		formA += 
+	print(numits)
 	
 	# If no errors and alignment is done, render to template.
 	if bio.alg.done and bio.error == "":
@@ -128,8 +130,8 @@ def nw():
 			results = bio.results,
 			name = bio.name,
 			alg = bio.algorithm,
-			formA = Markup(formA),
-			formB = Markup(formB),
+			formA = Markup(alignments[0]),
+			formB = Markup(alignments[1]),
 			lenA = len(bio.seq[0]),
 			lenB = len(bio.seq[1]))
 	# $def with (similarity, nameA, nameB, alignA, alignB, algorithm, lenA, lenB)
