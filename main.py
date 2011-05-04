@@ -2,9 +2,9 @@
 
 from python.needlemanwunsch import NeedlemanWunsch
 from python.load import readfiles
-from subprocess import *
-from buzhug import Base
-import glob, argparse, json, textwrap, math
+from python.bio import Bioinformatics as Bio
+import json
+import textwrap, math
 from flask import Flask, render_template, request, Markup
 
 # Is this application running on a server?
@@ -15,46 +15,6 @@ server = False
 
 ## TODO: Implement these elsewhere and do them better
 biocpp = False
-db = []
-
-### Bioinformatics
-class Bio:
-	def __init__(self):
-		self.results = {}
-		self.seqs = []
-		self.seq = []
-		self.name = []
-		self.algorithm = ""
-		self.error = ""
-	
-	def addseq(self, seqname):
-		self.name.append(seqname)
-		self.seq.append(self.seqs[seqname]) # db here
-	
-	def clearseq(self):
-		self.name = []
-		self.seq = []
-	
-	def nw(self):
-		if len(self.name) > 2:
-			self.error = "Too many sequences for Needleman-Wunsch."
-		elif len(self.name) < 2:
-			self.error = "Too few sequences for Needleman-Wunsch."
-		
-		# Use bioinfo binary, or native Python implementation?
-		if biocpp:
-			output = Popen(["./bioinfo", "-nm", self.seq[0], self.seq[1]], stdout=PIPE).communicate()[0]
-			# process output into results here
-		else:
-			self.alg = NeedlemanWunsch(self.seq[0], self.seq[1])
-			self.alg.align()
-			self.results['similarity'] = self.alg.homology()
-			self.results['alignments'] = [self.alg.A, self.alg.B]
-			self.results['diffs'] = self.alg.diffs
-
-### Database
-
-
 
 ### Web Interface
 
@@ -67,7 +27,7 @@ app = Flask(__name__)
 def main():
 	return render_template('index.html')
 
-@app.route("/nw")
+@app.route("/bioinfo/nw")
 def nw():
 	bio.algorithm = "Needleman-Wunsch"
 	
@@ -134,11 +94,11 @@ def seqs():
 
 # Run web app.
 if __name__ == "__main__":
-	if server:
-		print('bla')
+#	if server:
+	#	print('bla')
 	#	from werkzeug.contrib.fixers import LighttpdCGIRootFix
 	#	app.wsgi_app = LighttpdCGIRootFix(app.wsgi_app)
-	else:
-		app.run(debug=True)
+#	else:
+	app.run()
 
 #db.close()
