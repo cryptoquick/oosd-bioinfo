@@ -1,4 +1,9 @@
 import subprocess, argparse, json
+from needlemanwunsch import NeedlemanWunsch
+
+biocpp = False
+
+__all__ = ["Bioinformatics"]
 
 ### Bioinformatics
 class Bioinformatics:

@@ -3,7 +3,7 @@
 from python.needlemanwunsch import NeedlemanWunsch
 from python.load import readfiles
 from python.bio import Bioinformatics as Bio
-import json
+import subprocess, argparse, json
 import textwrap, math
 from flask import Flask, render_template, request, Markup
 
@@ -12,6 +12,11 @@ server = False
 
 # Prevents internal server errors in FastCGI.
 # print("Content-type: text/html\n")
+
+
+
+### Bioinformatics
+
 
 ## TODO: Implement these elsewhere and do them better
 biocpp = False
@@ -27,10 +32,16 @@ app = Flask(__name__)
 def main():
 	return render_template('index.html')
 
-@app.route("/nw")
+#@app.route("/bioinfo/nw")
+#def nw():
+	return "bla"
+	#bio.addseq(str(request.args['s1']))
+	#bla = request.args['s1']
+	#return bio.seq[0]
+	
+@app.route("/bioinfo/nw")
 def nw():
 	bio.algorithm = "Needleman-Wunsch"
-	
 	# Get the sequence input from main page.
 	bio.clearseq()
 	bio.addseq(str(request.args['s1']))
@@ -38,7 +49,7 @@ def nw():
 	
 	# Align.
 	bio.nw()
-	
+	print(bio.results)
 	# Format alignment strings for output.
 	alignments = []
 	
@@ -71,7 +82,7 @@ def nw():
 	
 	# If no errors and alignment is done, render to template.
 	if bio.alg.done and bio.error == "":
-		return render_template('nw.html', \
+		return render_template('nw.html',
 			results = bio.results,
 			name = bio.name,
 			alg = bio.algorithm,
@@ -80,7 +91,7 @@ def nw():
 			lenA = len(bio.seq[0]),
 			lenB = len(bio.seq[1]))
 	else:
-		return bio.error
+		return bio.error + "bla"
 
 @app.route("/diffs", methods=['POST'])
 def diffs():

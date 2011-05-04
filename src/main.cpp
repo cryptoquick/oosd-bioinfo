@@ -2,7 +2,7 @@
 //#include "needleman_wunsch.h"
 //#include <vector>
 #include <string.h>
-
+#include "libjson.h"
 
 int main(int argc, char* argv[])
 {
@@ -14,12 +14,15 @@ int main(int argc, char* argv[])
 		ui = new UserInterface(true);
 		delete ui;
 	}
-	else if (argc == 5)
+	else if (argc == 3)
 	{
 		ui = new UserInterface(false);
 		
-		if (strcmp(argv[1], "-nm") == 0)
+		if (strcmp(argv[1], "--json") == 0)
 		{
+			JS * js;
+			js = new JS();
+			js->test();
 			// int gap = (int)argv[2];
 			// 		string method = argv[3];
 			// 		string data1 = argv[4];
