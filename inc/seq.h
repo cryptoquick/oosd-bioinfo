@@ -1,7 +1,7 @@
 #ifndef __SEQ_H
 #define __SEQ_H
 #include <iostream>
-#include <fstream>
+//#include <fstream>
 #include <string>
 #include <vector>
 #include "file.h"

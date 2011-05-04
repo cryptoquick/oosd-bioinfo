@@ -1,7 +1,7 @@
 #include "seq.h"
-#include <iostream>
-#include <fstream>
-#include <string>
+//#include <iostream>
+//#include <fstream>
+//#include <string>
 #include <vector>
 
 Sequence::Sequence(char *p)
@@ -23,7 +23,7 @@ Sequence::Sequence(char *p)
 Sequence::Sequence(string data)
 {
 	len = data.length();
-	cout<< "THE LENGTH = " << len <<endl;
+	std::cout<< "THE LENGTH = " << len << std::endl;
 
 	for(int i=0; i<len; i++)
 	{
