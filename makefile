@@ -1,6 +1,4 @@
-SRCS		= main ui file seq needleman_wunsch smith algorithm
-LPATH		= -Llib
-LIB			= -ljson
+SRCS		= main ui file seq needleman_wunsch smith algorithm json
 OUT			= bioinfo
 OBJDIR		= obj
 SRCDIR		= src
@@ -13,7 +11,7 @@ $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
 	$(CXX) -c $(CXXFLAGS) $< -o $@
 
 $(OUT): $(OBJS)
-	$(CXX) -o $(OUT) $(OBJS)
+	$(CXX) -o $(OUT) $(OBJS) -Llib -ljson
 
 $(OBJS): | $(OBJDIR)
 
