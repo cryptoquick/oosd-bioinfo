@@ -12,6 +12,9 @@ class NeedlemanWunsch {
 	vector<char> seq2;
 	vector<vector <int> > scores;
 
+	vector <char> aligned1;
+	vector <char> aligned2;
+
 	void initialize();
 	void fill();
 	void trace();
@@ -19,8 +22,7 @@ class NeedlemanWunsch {
 public:
 	NeedlemanWunsch( int gap, vector<char> s1, vector<char> s2);
 	void align();
-	vector <char> aligned1;
-	vector <char> aligned2;
+	vector<char> getAlignSequence(int);
 
 	void setScoringMatrix(int s[4][4]);
 };

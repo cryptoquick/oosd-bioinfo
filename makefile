@@ -19,7 +19,7 @@ algorithm.o: src/algorithm.cpp src/algorithm.h
 needleman_wunsch.o:
 	g++ -Wall -c src/needleman_wunsch.cpp src/needleman_wunsch.h
 
-src/smith.o:
+smith.o:
 	g++ -Wall -c src/smith.cpp src/smith.h
 
 clean:

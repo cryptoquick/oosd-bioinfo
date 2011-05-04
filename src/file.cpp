@@ -20,6 +20,7 @@ void File::load() {
 	string output = "";
 	string line;
 	int i = 0;
+
 	ifstream input (path);
 	if(!input.is_open()) {
 		cout << "Failed to open file " << path << endl;

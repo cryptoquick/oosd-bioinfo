@@ -1,12 +1,13 @@
 #include "needleman_wunsch.h"
 #include <vector>
+#include <iostream>
 
 /*! NeedlemanWunsch constructor
  *  Sets gap penalty and sequence set through parameters
  *  Calculates and sets length of sequences
  */
 
-NeedlemanWunsch::NeedlemanWunsch( int gap, vector<char> s1, vector<char> s2) {
+NeedlemanWunsch::NeedlemanWunsch(int gap, vector<char> s1, vector<char> s2) {
 	// Set attributes
 	seq1 = s1;
 	seq2 = s2;
@@ -155,6 +156,18 @@ void NeedlemanWunsch::align() {
 	initialize();
 	fill();
 	trace();
+}
+
+vector<char> NeedlemanWunsch::getAlignSequence(int seqnum)
+{
+		if(seqnum == 1)
+		{
+			return aligned1;
+		}
+		else
+		{
+			return aligned2;
+		}
 }
 
 

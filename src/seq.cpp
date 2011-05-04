@@ -40,10 +40,16 @@ Sequence::~Sequence()
 {
 	delete file;
 
-	if(alg)
-	{
-		delete alg;
-	}
+		if(&alg->nw)
+		{
+			delete &alg->nw;
+		}
+		else if(&alg->sm)
+		{
+			delete &alg->sm;
+		}
+
+	delete &alg;
 }
 
 int Sequence::getLength()
@@ -52,10 +58,9 @@ int Sequence::getLength()
 }
 
 
-void Sequence::compare(Sequence *seq1, Sequence *seq2)
+void Sequence::compare(Sequence *seq1, Sequence *seq2, int penalty, string method)
 {
-
-	alg = new Algorithm();
+	alg = new Algorithm(penalty, method);
 	alg->Homology(seq1,seq2);
 }
 
@@ -73,18 +78,17 @@ void Sequence::printOut()
 		cout<<seq[i];
 	}
 	cout<<endl;
+	cout<<endl;
 
 
 }
 
+void Sequence::resetLength()
+{
+	len = seq.size();
+}
+
 vector<char> Sequence::get()
 {
-	if(len>0)
-	{
 		return seq;
-	}
-	else
-	{
-		cout<<"There is nothing in that Sequence"<<endl;
-	}
 }

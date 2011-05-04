@@ -26,9 +26,10 @@ public:
 	~Sequence();
 
 	vector<char> get();
-	void compare(Sequence*, Sequence*);
+	void compare(Sequence*, Sequence*, int, string);
 	void printOut();
 	int getLength();
+	void resetLength();
 	bool checkExistence();
 
 	vector<char> seq;
