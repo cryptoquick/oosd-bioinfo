@@ -10,8 +10,8 @@
 #include <string>
 #include <algorithm>
 
-//Don't need this except for testing
-//#include <stdio.h>
+//Necessary for strlen call
+#include <string.h>
 
 using namespace std;
 
@@ -28,7 +28,7 @@ UserInterface::UserInterface(bool standalone)
 {
 	if(!pInstance || pInstance == false)
 	{
-		//Initalize file input holders;
+		//Initialize file input holders;
 		file1 = new char[100];
 		file2 = new char[100];
 		initiated = true;
@@ -41,8 +41,7 @@ UserInterface::UserInterface(bool standalone)
 		}
 	}
 	else
-		cout<<"Sorry, a userinterface already exists. If you want another you will have to delete this one first."<<endl;
-	//return pInstance;
+		cout<<"Sorry, the user-interface already exists. If you want another you will have to delete this one first."<<endl;
 }
 
 UserInterface::~UserInterface()
@@ -52,18 +51,16 @@ UserInterface::~UserInterface()
 	
 	if(SequencesImported == true)
 	{
-		delete seq;
+		cout<<"Ending the program!"<<endl;
+		delete seq1;
 		delete seq2;
 	}
 
 	pInstance = NULL;
 }
 
-//UserInterface* UserInterface::pInstance = NULL;
-
 void UserInterface::start()
 {
-//	LoadAllFastaFiles();
 
 	cout<<"Welcome to the DNA Sequencer Program"<<endl;
 	Options();
@@ -120,7 +117,7 @@ void UserInterface::Print()
 {
 	cout<<endl;
 	cout<<"Printing out the first Sequence"<<endl;	
-	seq->printOut();
+	seq1->printOut();
 	cout<<endl;
 
 	cout<<"Printing out the second Sequence"<<endl;
@@ -142,8 +139,57 @@ void UserInterface::Tree()
 
 void UserInterface::Compare()
 {
-	//seq->homology(seq, seq2);
-	seq->compare(seq, seq2);
+	int penalty = -1;
+	int input;
+	string method = "needle";
+
+	cout<<endl;
+	while(penalty <= 0)
+	{
+
+		try
+		{
+				cout<<"What number penalty are you assigning to gaps?(whole numbers please)"<<endl;
+				cin>>penalty;
+			if(penalty <= 0 || cin.fail())
+			{
+				cin.clear();
+				penalty = -1;
+				cin>>penalty;
+				cout<<"Sorry only whole number penalties are allowed. Try again."<<endl;
+				exit(0);
+			}
+
+				cout<<"Now what algorithm do you want to use:"<<endl;
+				cout<<"'1' for Needleman-Wursch"<<endl;
+				cout<<"'2' for Smith"<<endl;
+				cin>>input;
+				cout<<input<<endl;
+			if((input != 1 && input != 2)|| cin.fail())
+			{
+				cin.clear();
+				penalty = -1;
+				cin>>penalty;
+				cout<<"Sorry only whole number penalties are allowed. Try again."<<endl;
+				exit(0);
+			}
+			else if(input == 1)
+			{
+				method = "needle";
+			}
+			else if(input == 2)
+			{
+				method = "smith";
+			}
+		}
+		catch(...)
+		{
+			cout<<"Only numbers allowed."<<endl;
+			penalty = -1;
+			exit(1);
+		}
+	}
+	seq1->compare(seq1, seq2, penalty, method);
 }
 
 void UserInterface::Open()
@@ -156,7 +202,7 @@ void UserInterface::Open()
 	{
 		cout<<"You already have two files open."<<endl;
 		cout<<endl;
-		cout<<"If you want to open other sequences type 'y' else hit anyother key to return to the main-menu."<<endl;
+		cout<<"If you want to open other sequences type 'y' else hit any other key to return to the main-menu."<<endl;
 
 		char openexit = 'n';
 		cin>>openexit;
@@ -170,7 +216,7 @@ void UserInterface::Open()
 			}
 			else
 			{
-				delete(seq);
+				delete(seq1);
 				delete(seq2);
 				SequencesImported = false;
 			}
@@ -185,11 +231,10 @@ void UserInterface::Open()
 
 	cout<<endl;
 	cout<<"Your choices are:(You can have others, but you will have to either put them in the Dna_Sequences folder or type in the path yourself):"<<endl;
-	cout<<"Dna_Sequences/M90848.fasta"<<endl;
-	cout<<"Dna_Sequences/M90849.fasta"<<endl;
+	cout<<"Look in the FASTA Folder"<<endl;
+	cout<<"Type: ../FASTA/(filename)"<<endl;
 
 	//Leave out for now till I can find a way to get the Fasta Files into a database.
-	//PrintAllFastaFiles();
 	cout<<"\nEnter the first sequence you want to compare"<<endl;
 	cin>>file1;
 
@@ -210,11 +255,11 @@ void UserInterface::Open()
 	//Now using the sequencer methods with the data.
 
 		//Create two new Sequence objects
-		seq = new Sequence(file1);
+		seq1 = new Sequence(file1);
 		
-			if(seq->checkExistence() == false)
+			if(seq1->checkExistence() == false)
 			{
-				cout<<"Your first file does not exist, starting over"<<endl;
+				cout<<"Your first file does not exist, starting over, please inspect your file paths."<<endl;
 				cout<<endl;
 				Open();
 			}
@@ -224,7 +269,7 @@ void UserInterface::Open()
 		
 			if(seq2->checkExistence() == false)
 			{
-				cout<<"Your second file does not exist, starting over"<<endl;
+				cout<<"Your second file does not exist, starting over, please inspect your file paths."<<endl;
 				cout<<endl;
 				Open();
 			}
@@ -239,20 +284,27 @@ void UserInterface::Open()
 	}//end of while loop
 }
 
-void UserInterface::Open(string data1, string data2)
+void UserInterface::Open(int gap, string method, string data1, string data2)
 {
 	//Create two new Sequence objects
-	seq = new Sequence(data1);
+	seq1 = new Sequence(data1);
 	seq2 = new Sequence(data2);
 
-	SequencesImported = true;
+
+	//Just to make sure that all input is lowercase for the Compare method(needle or smith) you wanted to use.
+	for(int i = 0; i<strlen(method.c_str()); i++)
+	{
+		if(method[i] >= 0x41 && method[i] <= 0x5A)
+		{
+			method[i] = method[i] + 0x20;
+		}
+	}
+
+	seq1->compare(seq1, seq2, gap, method);
+	seq1->printOut();
+	seq2->printOut();
 
 	return;
-}
-
-void UserInterface::SetGap(int penalty)
-{
-
 }
 
 void UserInterface::Quit()

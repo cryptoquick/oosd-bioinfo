@@ -14,18 +14,21 @@ int main(int argc, char* argv[])
 		ui = new UserInterface(true);
 		delete ui;
 	}
-	else if (argc == 4)
+	else if (argc == 5)
 	{
 		ui = new UserInterface(false);
 		
 		if (strcmp(argv[1], "-nm") == 0)
 		{
-			string data1 = argv[2];
-			string data2 = argv[3];
+			int gap = (int)argv[2];
+			string method = argv[3];
+			string data1 = argv[4];
+			string data2 = argv[5];
 			
-			ui->Open(data1, data2);
+			ui->Open(gap, method, data1, data2);
 			ui->Compare();
 			ui->Print();
+			delete ui;
 			return 0;
 		}
 	}

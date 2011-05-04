@@ -5,7 +5,7 @@ class Sequence;
 
 class UserInterface
 {
-Sequence * seq;
+Sequence * seq1;
 Sequence * seq2;
 char choice;
 char *file1;
@@ -24,10 +24,12 @@ public:
 	void Tree();
 	void Compare();
 	void Open();
-	void Open(string, string);
+	void Open(int, string, string, string);
 	void Quit();
 	void Options();
 	void start();
-	void SetGap(int);
+
+	//This is for the multisequence
+	void Compare(Sequence*, Sequence*, int);
 };
 
