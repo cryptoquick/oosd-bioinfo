@@ -27,7 +27,7 @@ app = Flask(__name__)
 def main():
 	return render_template('index.html')
 
-@app.route("/bioinfo/nw")
+@app.route("/nw")
 def nw():
 	bio.algorithm = "Needleman-Wunsch"
 	
