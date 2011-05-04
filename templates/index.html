@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<head>
+	<title>Bioinfo</title>
+	<link href="static/styles.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="static/ajax.js"></script>
+	<script type="text/javascript" src="static/main.js"></script>
+</head>
+<body onload="init()">
+	<div id="results">
+		<p class="header">Choose an algorithm.</p>
+		<a class="button" id="nwbut" href="#nw" onclick="select('nw')">Needleman-Wunsch</a>
+		<a class="button" id="msabut" href="#msa" onclick="select('msa')">Multi-Sequence Alignment</a>
+		<p class="header" style="margin-top: 42px">Sequences<span id="seqnum"></span></p>
+		<p id="seqs"></p>
+		<p class="header" style="margin-top: 250px">Run</p>
+		<a class="button" id="gobut" href="/">Please select algorithm &amp; sequences</a>
+	</div>
+</body>
+</html>
