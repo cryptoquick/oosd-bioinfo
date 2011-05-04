@@ -20,15 +20,15 @@ int main(int argc, char* argv[])
 		
 		if (strcmp(argv[1], "-nm") == 0)
 		{
-			int gap = (int)argv[2];
-			string method = argv[3];
-			string data1 = argv[4];
-			string data2 = argv[5];
-			
-			ui->Open(gap, method, data1, data2);
-			ui->Compare();
-			ui->Print();
-			delete ui;
+			// int gap = (int)argv[2];
+			// 		string method = argv[3];
+			// 		string data1 = argv[4];
+			// 		string data2 = argv[5];
+			// 		
+			// 		ui->Open(gap, method, data1, data2);
+			// 		ui->Compare();
+			// 		ui->Print();
+			// 		delete ui;
 			return 0;
 		}
 	}
