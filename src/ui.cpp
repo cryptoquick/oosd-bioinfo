@@ -292,13 +292,13 @@ void UserInterface::Open(int gap, string method, string data1, string data2)
 
 
 	//Just to make sure that all input is lowercase for the Compare method(needle or smith) you wanted to use.
-	for(int i = 0; i<strlen(method.c_str()); i++)
+/*	for(int i = 0; i<strlen(method.c_str()); i++)
 	{
 		if(method[i] >= 0x41 && method[i] <= 0x5A)
 		{
 			method[i] = method[i] + 0x20;
 		}
-	}
+	}*/
 
 	seq1->compare(seq1, seq2, gap, method);
 	seq1->printOut();
