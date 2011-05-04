@@ -1,28 +1,38 @@
-#include "ui.h"
-//#include "needleman_wunsch.h"
+
+//#include <string>
+//#include <string.h>
+//
 //#include <vector>
-#include <string.h>
-#include "libjson.h"
+//#include "libjson.h"
+#include <iostream>
+#include <sstream>
+#include "ui.h"
+
+#include "../json/reader.h"
+#include "../json/writer.h"
+#include "../json/elements.h"
 
 int main(int argc, char* argv[])
 {
-
-	UserInterface * ui;
-	// Simple interface for running commands.
-
-	if (argc == 1) {
-		ui = new UserInterface(true);
-		delete ui;
-	}
-	else if (argc == 3)
+	if (argc == 3)
 	{
-		ui = new UserInterface(false);
+		string s1 ("--json");
+		string s2 (argv[1]);
 		
-		if (strcmp(argv[1], "--json") == 0)
+		if (s1.compare(s2) == 0)
 		{
-			JS * js;
-			js = new JS();
-			js->test();
+			ostringstream oss (ostringstream::out);
+			
+			json::Object jsobj;
+			jsobj["Name"] = json::String("Schlafly American Pale Ale");
+			jsobj["Origin"] = json::String("St. Louis, MO, USA");
+			jsobj["ABV"] = json::Number(3.8);
+			jsobj["BottleConditioned"] = json::Boolean(true);
+			
+			json::Writer::Write(jsobj, oss);
+			
+			cout << oss.str();
+			
 			// int gap = (int)argv[2];
 			// 		string method = argv[3];
 			// 		string data1 = argv[4];
@@ -39,12 +49,6 @@ int main(int argc, char* argv[])
 	{
 		cout << "incorrect arguments\n";
 	}
-
-	//Just for tests to make sure that the singleton is working as expected
-	/*
-	UserInterface * ui2 = new UserInterface();
-	delete ui2;
-	*/
-
+	
 	return 0;
 };

@@ -1,4 +1,4 @@
-SRCS		= main ui file seq needleman_wunsch smith algorithm libjson
+SRCS		= main ui file seq needleman_wunsch smith algorithm
 OUT			= bioinfo
 OBJDIR		= obj
 SRCDIR		= src
@@ -8,10 +8,10 @@ OBJS		= $(addprefix $(OBJDIR)/,$(_OBJS))
 CXXFLAGS	= -Wall -I$(INCDIR)
 
 $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
-	$(CXX) -c $(CXXFLAGS) $< inc/json.h -o $@
+	$(CXX) -c $(CXXFLAGS) $< -o $@
 
 $(OUT): $(OBJS)
-	$(CXX) -o $(OUT) $(OBJS) -Llib -ljson
+	$(CXX) -o $(OUT) $(OBJS)
 
 $(OBJS): | $(OBJDIR)
 
