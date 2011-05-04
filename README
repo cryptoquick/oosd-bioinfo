@@ -22,12 +22,17 @@ released under the GPL since 1302863129
 =prerequisites=
 basic set of developer tools: g++, gnu-make, easy_install
 python 2.7
-web.py: easy_install web.py
+flask: easy_install flask
 buzhug: easy_install buzhug
+jsoncpp: http://jsoncpp.sourceforge.net/index.html
+(requires scons-local to build: http://www.scons.org/download.php)
 
-=installation=
+=compilation=
 navigate to where you'd like to install this program within your terminal. now:
 hg clone http://oosd-bioinfo.googlecode.com/hg/
+place jsoncpp header files (jsoncpp/include/json) into include directory (bioinfo/include/json)
+build jsoncpp with scons-local from links above
+place .a file from jsoncpp/libs into bioinfo/lib
 make
 
 =usage=
@@ -36,12 +41,9 @@ bioinfo can be used three different ways. a graphical web interface is provided,
 ./bioinfo
 -localhost access-
 python main.py
-specify a port, otherwise, 8080 is used by default
 -server-
 place this program in a webserver, and have the server access it from there using CGI or similar
-for example, install lighttpd, then follow this guide: http://webpy.org/cookbook/fastcgi-lighttpd
-then run: ./main.py fastcgi 8080 &
-to kill the process, ps -aux, find the python process, and use that pid to kill it.
+for example, install lighttpd, then ... further instructions to come.
 
 =greetz=
 ivo g.

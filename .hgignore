@@ -11,3 +11,4 @@ lib/libjson
 lib/libjson.a
 lib/libjson.so
 obj
+inc/json
