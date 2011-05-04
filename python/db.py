@@ -1,5 +1,7 @@
 from buzhug import Base
 import load
 
-db = []
+dbdata = []
 
+
+#db.close()

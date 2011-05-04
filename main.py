@@ -31,15 +31,8 @@ app = Flask(__name__)
 @app.route("/")
 def main():
 	return render_template('index.html')
-
-#@app.route("/bioinfo/nw")
-#def nw():
-	return "bla"
-	#bio.addseq(str(request.args['s1']))
-	#bla = request.args['s1']
-	#return bio.seq[0]
 	
-@app.route("/bioinfo/nw")
+@app.route("/nw")
 def nw():
 	bio.algorithm = "Needleman-Wunsch"
 	# Get the sequence input from main page.
@@ -105,11 +98,5 @@ def seqs():
 
 # Run web app.
 if __name__ == "__main__":
-#	if server:
-	#	print('bla')
-	#	from werkzeug.contrib.fixers import LighttpdCGIRootFix
-	#	app.wsgi_app = LighttpdCGIRootFix(app.wsgi_app)
-#	else:
 	app.run()
 
-#db.close()
