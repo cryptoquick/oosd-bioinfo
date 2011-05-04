@@ -7,3 +7,7 @@ bioinfo
 .DS_Store
 .metadata
 File
+lib/libjson
+lib/libjson.a
+lib/libjson.so
+obj
