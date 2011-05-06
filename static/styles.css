@@ -12,6 +12,7 @@ body, html {
 p, pre {margin: 10px;}
 
 #results {
+	width: 800px;
 	float: left;
 	margin: 50px;
 	padding: 1px;
