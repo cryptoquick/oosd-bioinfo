@@ -19,7 +19,7 @@ server = False
 
 
 ## TODO: Implement these elsewhere and do them better
-biocpp = False
+biocpp = True
 
 ### Web Interface
 

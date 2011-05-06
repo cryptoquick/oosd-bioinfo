@@ -1,7 +1,8 @@
-import subprocess, argparse, json
+from subprocess import *
+import argparse, json
 from needlemanwunsch import NeedlemanWunsch
 
-biocpp = False
+biocpp = True
 
 __all__ = ["Bioinformatics"]
 
@@ -31,8 +32,24 @@ class Bioinformatics:
 		
 		# Use bioinfo binary, or native Python implementation?
 		if biocpp:
-			output = subprocess.Popen(["./bioinfo", "-nm", self.seq[0], self.seq[1]], stdout=PIPE).communicate()[0]
-			# process output into results here
+		#	self.alg = NeedlemanWunsch(self.seq[0], self.seq[1])
+		#	self.alg.align()
+		#	self.results['similarity'] = self.alg.homology()
+		#	self.results['alignments'] = [self.alg.A, self.alg.B]
+		#	self.results['diffs'] = self.alg.diffs
+			print("doing")	
+			output = Popen(["./bioinfo", "--json", seqs["M90848"]], stdout=PIPE).communicate()[0]
+			print("done")
+		#	proc = subprocess.Popen(["./bioinfo"],
+		#		stdout=subprocess.PIPE)
+		#	proc.communicate()[0]
+		#	output.stdout.readline()
+		#	output = proc.stdout.readline()
+		#	proc.communicate()[0]
+		#	obj = json.loads("bla")
+		#	print(obj["Name"])
+			print(output)
+			proc.stdout.close()
 		else:
 			self.alg = NeedlemanWunsch(self.seq[0], self.seq[1])
 			self.alg.align()
