@@ -2,8 +2,6 @@ from subprocess import *
 import argparse, json
 from needlemanwunsch import NeedlemanWunsch
 
-biocpp = True
-
 __all__ = ["Bioinformatics"]
 
 ### Bioinformatics
@@ -15,6 +13,7 @@ class Bioinformatics:
 		self.name = []
 		self.algorithm = ""
 		self.error = ""
+		self.cpp = False # Will the program use C++?
 	
 	def addseq(self, seqname):
 		self.name.append(seqname)
@@ -31,25 +30,28 @@ class Bioinformatics:
 			self.error = "Too few sequences for Needleman-Wunsch."
 		
 		# Use bioinfo binary, or native Python implementation?
-		if biocpp:
-		#	self.alg = NeedlemanWunsch(self.seq[0], self.seq[1])
-		#	self.alg.align()
-		#	self.results['similarity'] = self.alg.homology()
-		#	self.results['alignments'] = [self.alg.A, self.alg.B]
-		#	self.results['diffs'] = self.alg.diffs
-			print("doing")	
-			output = Popen(["./bioinfo", "--json", seqs["M90848"]], stdout=PIPE).communicate()[0]
-			print("done")
+		if self.cpp:
+			self.alg = NeedlemanWunsch(self.seq[0], self.seq[1])
+			self.alg.align()
+			self.results['similarity'] = self.alg.homology()
+			self.results['alignments'] = [self.alg.A, self.alg.B]
+			self.results['diffs'] = self.alg.diffs
+			print("doing")
+			proc = Popen(["./bioinfo", "--json", "M90848"], stdout=PIPE)
+			output = proc.communicate()[0]
+		#	output = subprocess.Popen(["./bioinfo", "--json", "M90848"]).communicate()[0]
+		#	print(output)
 		#	proc = subprocess.Popen(["./bioinfo"],
 		#		stdout=subprocess.PIPE)
 		#	proc.communicate()[0]
 		#	output.stdout.readline()
 		#	output = proc.stdout.readline()
 		#	proc.communicate()[0]
-		#	obj = json.loads("bla")
-		#	print(obj["Name"])
-			print(output)
-			proc.stdout.close()
+			obj = json.loads(output)
+			print(obj)
+		#	print(output)
+		#	proc.close()
+			print("done")
 		else:
 			self.alg = NeedlemanWunsch(self.seq[0], self.seq[1])
 			self.alg.align()
