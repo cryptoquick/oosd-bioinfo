@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
-		cout << "incorrect arguments\n";
+		cout << "incorrect arguments; arguments given: " << argc << "\n";
 	}
 	
 	return 0;
