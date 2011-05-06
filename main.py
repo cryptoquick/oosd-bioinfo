@@ -36,34 +36,34 @@ def nw():
 	bio.nw()
 #	print(bio.results)
 	# Format alignment strings for output.
-	alignments = []
-	
-	for result in bio.results['alignments']:
-		wrapped = textwrap.wrap(result, 80)
-		formatted = []
-		linenum = 1
-		indices = bio.results['diffs']
-		for line in wrapped:
-			format = ""
-			lastindex = 0
-			for index in indices:
-				if index >= linenum * 80: # this area has problems......
-					indx = math.floor(index / 80) # In case there are two or more lines here.
-				#	print(str(indx) + "indx")
-					while indx > 0:
-						linenum += 1 # not robust enough! fails on M90848, M90907
-						indx -= 1
-					break
-				else:
-					i = index - 80 * (linenum - 1)
-					if i < 80 and i >= 0:
-					#	print(lastindex)
-					#	print(i)
-						format += line[lastindex:i] + '<span class="hred">' + line[i] + '</span>'
-						lastindex = i + 1
-			format += line[lastindex:]
-			formatted.append(format)
-		alignments.append('<br>'.join(formatted))
+#	alignments = []
+#
+#	for result in bio.results['alignments']:
+#		wrapped = textwrap.wrap(result, 80)
+#		formatted = []
+#		linenum = 1
+#		indices = bio.results['diffs']
+#		for line in wrapped:
+#			format = ""
+#			lastindex = 0
+#			for index in indices:
+#				if index >= linenum * 80: # this area has problems......
+#					indx = math.floor(index / 80) # In case there are two or more lines here.
+#				#	print(str(indx) + "indx")
+#					while indx > 0:
+#						linenum += 1 # not robust enough! fails on M90848, M90907
+#						indx -= 1
+#					break
+#				else:
+#					i = index - 80 * (linenum - 1)
+#					if i < 80 and i >= 0:
+#					#	print(lastindex)
+#					#	print(i)
+#						format += line[lastindex:i] + '<span class="hred">' + line[i] + '</span>'
+#						lastindex = i + 1
+#			format += line[lastindex:]
+#			formatted.append(format)
+#		alignments.append('<br>'.join(formatted))
 	
 	# If no errors and alignment is done, render to template.
 	if bio.alg.done and bio.error == "":
@@ -71,8 +71,8 @@ def nw():
 			results = bio.results,
 			name = bio.name,
 			alg = bio.algorithm,
-			formA = Markup(alignments[0]),
-			formB = Markup(alignments[1]),
+			formA = bio.results['alignments'][0], #Markup(alignments[0]),
+			formB = bio.results['alignments'][1], #Markup(alignments[1]),
 			lenA = len(bio.seq[0]),
 			lenB = len(bio.seq[1]))
 	else:
@@ -90,5 +90,6 @@ def seqs():
 
 # Run web app.
 if __name__ == "__main__":
+	app.debug = True
 	app.run()
 
