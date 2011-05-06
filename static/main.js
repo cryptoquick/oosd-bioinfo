@@ -49,7 +49,7 @@ function seq(seqname) {
 		seq_queue.push(seqname);
 		el.className = "buttonhi";
 		gobut.innerText = "Needleman Wunsch: " + seq_queue[0] + ", " + seq_queue[1];
-		gobut.href = "/bioinfo/nw?s1=" + seq_queue[0] + "&s2=" + seq_queue[1];
+		gobut.href = "nw?s1=" + seq_queue[0] + "&s2=" + seq_queue[1];
 	}
 	else if (seq_queue.length == 2 && alg == "nw") {
 		while(seq_queue.length > 0) {

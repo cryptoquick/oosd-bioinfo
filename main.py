@@ -3,17 +3,8 @@
 from python.needlemanwunsch import NeedlemanWunsch
 from python.load import readfiles
 from python.bio import Bioinformatics as Bio
-import subprocess, argparse, json
-import textwrap, math
+import json, textwrap, math
 from flask import Flask, render_template, request, Markup
-
-# Is this application running on a server?
-server = False
-
-# Prevents internal server errors in FastCGI.
-# print("Content-type: text/html\n")
-
-
 
 ### Bioinformatics
 
@@ -35,6 +26,7 @@ def main():
 @app.route("/nw")
 def nw():
 	bio.algorithm = "Needleman-Wunsch"
+	bio.cpp = True
 	# Get the sequence input from main page.
 	bio.clearseq()
 	bio.addseq(str(request.args['s1']))
@@ -42,7 +34,7 @@ def nw():
 	
 	# Align.
 	bio.nw()
-	print(bio.results)
+#	print(bio.results)
 	# Format alignment strings for output.
 	alignments = []
 	
@@ -57,7 +49,7 @@ def nw():
 			for index in indices:
 				if index >= linenum * 80: # this area has problems......
 					indx = math.floor(index / 80) # In case there are two or more lines here.
-					print(str(indx) + "indx")
+				#	print(str(indx) + "indx")
 					while indx > 0:
 						linenum += 1 # not robust enough! fails on M90848, M90907
 						indx -= 1
@@ -65,8 +57,8 @@ def nw():
 				else:
 					i = index - 80 * (linenum - 1)
 					if i < 80 and i >= 0:
-						print(lastindex)
-						print(i)
+					#	print(lastindex)
+					#	print(i)
 						format += line[lastindex:i] + '<span class="hred">' + line[i] + '</span>'
 						lastindex = i + 1
 			format += line[lastindex:]
