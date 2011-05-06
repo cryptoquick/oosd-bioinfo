@@ -32,9 +32,9 @@ if(prevCompared == 0)
     }
 	else
 	{
-        cout << "\nThe sequences are not the same length!\n" << endl;
+      // cout << "\nThe sequences are not the same length!\n" << endl;
         //cout<<"Method= "<<method<<endl;
-        if(method == "needle")
+        if(method == "needleman")
         {
         	NeedlemanWunschCompare(seq1, seq2);
         }
@@ -107,7 +107,7 @@ int Algorithm::Score(Sequence* seq1, Sequence* seq2)
     	}
     	float pct = (static_cast<float>(same) / static_cast<float>(seq1->getLength())) * 100;
 
-    	cout << "Seq 1 and 2 are " << pct << "% identical\n" << endl;
+    //	cout << "Seq 1 and 2 are " << pct << "% identical\n" << endl;
     	return pct;
     }
     else

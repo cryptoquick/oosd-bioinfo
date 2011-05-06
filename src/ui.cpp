@@ -113,16 +113,20 @@ void UserInterface::Options()
 	
 }
 
-void UserInterface::Print()
+json::Array UserInterface::Print()
 {
-	cout<<endl;
-	cout<<"Printing out the first Sequence"<<endl;	
-	seq1->printOut();
-	cout<<endl;
+	json::Array seqArr;
+	seqArr.Insert(json::String(seq1->getSequence()));
+	seqArr.Insert(json::String(seq2->getSequence()));
+	return seqArr;
+//	cout<<endl;
+//	cout<<"Printing out the first Sequence"<<endl;	
+//	seq1->printOut();
+//	cout<<endl;
 
-	cout<<"Printing out the second Sequence"<<endl;
-	seq2->printOut();
-	cout<<endl;
+//	cout<<"Printing out the second Sequence"<<endl;
+//	seq2->printOut();
+//	cout<<endl;
 }
 
 void UserInterface::Tree()
@@ -289,8 +293,7 @@ void UserInterface::Open(int gap, string method, string data1, string data2)
 	//Create two new Sequence objects
 	seq1 = new Sequence(data1);
 	seq2 = new Sequence(data2);
-
-
+	
 	//Just to make sure that all input is lowercase for the Compare method(needle or smith) you wanted to use.
 /*	for(int i = 0; i<strlen(method.c_str()); i++)
 	{
@@ -301,8 +304,8 @@ void UserInterface::Open(int gap, string method, string data1, string data2)
 	}*/
 
 	seq1->compare(seq1, seq2, gap, method);
-	seq1->printOut();
-	seq2->printOut();
+//	seq1->printOut();
+//	seq2->printOut();
 
 	return;
 }

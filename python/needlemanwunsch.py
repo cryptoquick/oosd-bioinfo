@@ -6,10 +6,11 @@ class NeedlemanWunsch:
 		self.B = ""
 		self.done = False
 		self.diffs = []
+		self.gap = -5;
 
 	def align(self):
 		# Var names from Wikipedia pseudocode
-		d = -5 # Gap penalty
+		d = self.gap # Gap penalty
 		A = self.seq1 # First sequence to be compared
 		B = self.seq2 # Second ""
 		I = range(len(A)) # To help iterate (Pythonic)

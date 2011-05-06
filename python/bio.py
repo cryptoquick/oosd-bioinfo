@@ -14,6 +14,7 @@ class Bioinformatics:
 		self.algorithm = ""
 		self.error = ""
 		self.cpp = False # Will the program use C++?
+		self.gap = -5;
 	
 	def addseq(self, seqname):
 		self.name.append(seqname)
@@ -31,29 +32,17 @@ class Bioinformatics:
 		
 		# Use bioinfo binary, or native Python implementation?
 		if self.cpp:
-			self.alg = NeedlemanWunsch(self.seq[0], self.seq[1])
-			self.alg.align()
-			self.results['similarity'] = self.alg.homology()
-			self.results['alignments'] = [self.alg.A, self.alg.B]
-			self.results['diffs'] = self.alg.diffs
-			print("doing")
-			proc = Popen(["./bioinfo", "--json", "M90848"], stdout=PIPE)
+			obj = {"seqs": [self.seq[0], self.seq[1]], "gap": self.gap, "algorithm": self.algorithm}
+			js = json.dumps(obj)
+			proc = Popen(["./bioinfo", "--json", js], stdout=PIPE)
 			output = proc.communicate()[0]
-		#	output = subprocess.Popen(["./bioinfo", "--json", "M90848"]).communicate()[0]
-		#	print(output)
-		#	proc = subprocess.Popen(["./bioinfo"],
-		#		stdout=subprocess.PIPE)
-		#	proc.communicate()[0]
-		#	output.stdout.readline()
-		#	output = proc.stdout.readline()
-		#	proc.communicate()[0]
 			obj = json.loads(output)
-			print(obj)
-		#	print(output)
-		#	proc.close()
-			print("done")
+			self.results['similarity'] = 99.0;
+			self.results['alignments'] = (obj["alignments"][0], obj["alignments"][1])
+			self.results['diffs'] = [0,1]
 		else:
 			self.alg = NeedlemanWunsch(self.seq[0], self.seq[1])
+			self.alg.gap = self.gap
 			self.alg.align()
 			self.results['similarity'] = self.alg.homology()
 			self.results['alignments'] = [self.alg.A, self.alg.B]

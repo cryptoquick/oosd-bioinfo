@@ -1,5 +1,10 @@
 #include "seq.h"
 
+// JSON
+#include "../json/reader.h"
+#include "../json/writer.h"
+#include "../json/elements.h"
+
 //Safely declare sequence so as to avoid potential problems compiling.
 class Sequence;
 
@@ -20,7 +25,7 @@ public:
 
 	void MainMenu();
 
-	void Print();
+	json::Array Print();
 	void Tree();
 	void Compare();
 	void Open();

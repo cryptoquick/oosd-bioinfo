@@ -14,7 +14,7 @@ released under the GPL since 1302863129
 - web interface
 - difference highlighting
 
-# to come:
+to come:
 - sequence database (can be loaded from local files)
 - multi-sequence alignment
 - phylogeny trees
@@ -24,26 +24,19 @@ basic set of developer tools: g++, gnu-make, easy_install
 python 2.7
 flask: easy_install flask
 buzhug: easy_install buzhug
-jsoncpp: http://jsoncpp.sourceforge.net/index.html
-(requires scons-local to build: http://www.scons.org/download.php)
 
 =compilation=
 navigate to where you'd like to install this program within your terminal. now:
 hg clone http://oosd-bioinfo.googlecode.com/hg/
-place jsoncpp header files (jsoncpp/include/json) into include directory (bioinfo/include/json)
-build jsoncpp with scons-local from links above
-place .a file from jsoncpp/libs into bioinfo/lib
 make
 
 =usage=
-bioinfo can be used three different ways. a graphical web interface is provided, courtesy of python.
--command line access-
-./bioinfo
+bioinfo is meant to be used as a web application using a python server. you may access it on your localhost, or place it on a server.
 -localhost access-
 python main.py
+navigate to http://localhost:5000 in your web browser.
 -server-
 place this program in a webserver, and have the server access it from there using CGI or similar
-for example, install lighttpd, then ... further instructions to come.
 
 =greetz=
 ivo g.
