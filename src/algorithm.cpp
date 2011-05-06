@@ -99,6 +99,7 @@ int Algorithm::Score(Sequence* seq1, Sequence* seq2)
     		else if(seq2->seq[i] == '-')
     		{
     			same = same - penalty;
+			seq1->seqDiff.push_back(i);
     		}
     		else
     		{
@@ -107,8 +108,19 @@ int Algorithm::Score(Sequence* seq1, Sequence* seq2)
     	}
     	float pct = (static_cast<float>(same) / static_cast<float>(seq1->getLength())) * 100;
 
+	seq1->simPercent = pct;
+
     //	cout << "Seq 1 and 2 are " << pct << "% identical\n" << endl;
     	return pct;
+
+/*
+	for(int j = 0; j<i; j++)
+	{
+		cout<<seq1->seqDiff[i];
+	}
+*/
+cout<<endl;
+	
     }
     else
     {

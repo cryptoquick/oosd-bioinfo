@@ -1,5 +1,7 @@
 #include "seq.h"
 
+#include <vector>
+
 // JSON
 #include "../json/reader.h"
 #include "../json/writer.h"
@@ -36,5 +38,9 @@ public:
 
 	//This is for the multisequence
 	void Compare(Sequence*, Sequence*, int);
+	
+	//This is for python
+	json::Array getSeqPercent();
+	json::Array seqDiffArray();
 };
 

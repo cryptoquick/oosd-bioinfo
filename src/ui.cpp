@@ -10,6 +10,7 @@
 #include <string>
 #include <algorithm>
 
+
 //Necessary for strlen call
 #include <string.h>
 
@@ -304,11 +305,35 @@ void UserInterface::Open(int gap, string method, string data1, string data2)
 	}*/
 
 	seq1->compare(seq1, seq2, gap, method);
+	
+	//seq1->score(seq1->seq, seq2->seq);
 //	seq1->printOut();
 //	seq2->printOut();
 
 	return;
 }
+
+//These only apply to Alex's python implmentation///////
+
+json::Array UserInterface::getSeqPercent()
+{
+	//Use the 'seq1->simPercent' as that will forward you the percentage difference.
+	json::Array seqPercent;
+	seqPercent.Insert(json::String(seq1->getSequence()));
+	return seqPercent;
+	//return seq1->simPercent;
+}
+
+json::Array UserInterface::seqDiffArray()
+{
+	//Use the 'seq1->simPercent' as that will forward you the difference matrix.
+	json::Array seqDiffArray;
+	seqDiffArray.Insert(json::String(seq1->getSequence()));
+	seqDiffArray.Insert(json::String(seq2->getSequence()));
+	return seqDiffArray;
+	//return seq1->seqDiff;
+}
+
 
 void UserInterface::Quit()
 {

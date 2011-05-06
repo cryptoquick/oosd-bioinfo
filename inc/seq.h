@@ -33,8 +33,16 @@ public:
 	bool checkExistence();
 	string getSequence();
 
+	vector<int> getScoreDiff();
+	int getScorePercent();
+
 	vector<char> seq;
+	vector<int> seqDiff;
+
+	float simPercent;
+
 	Algorithm *alg;
+
 
 };
 #endif
