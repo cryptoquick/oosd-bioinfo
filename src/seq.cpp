@@ -23,7 +23,7 @@ Sequence::Sequence(char *p)
 Sequence::Sequence(string data)
 {
 	len = data.length();
-	std::cout<< "THE LENGTH = " << len << std::endl;
+//	std::cout<< "THE LENGTH = " << len << std::endl;
 
 	for(int i=0; i<len; i++)
 	{
@@ -79,8 +79,18 @@ void Sequence::printOut()
 	}
 	cout<<endl;
 	cout<<endl;
+}
 
-
+string Sequence::getSequence()
+{
+	string output = "";
+	
+	for(int i = 0; i<len; i++)
+	{
+		output += seq[i];
+	}
+	
+	return output;
 }
 
 void Sequence::resetLength()

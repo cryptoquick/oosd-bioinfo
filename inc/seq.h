@@ -31,6 +31,7 @@ public:
 	int getLength();
 	void resetLength();
 	bool checkExistence();
+	string getSequence();
 
 	vector<char> seq;
 	Algorithm *alg;
