@@ -7,6 +7,7 @@ class NeedlemanWunsch:
 		self.done = False
 		self.diffs = []
 		self.gap = -5;
+		self.scores = {'x': 0, 'y': 0, 'pwd': 0.0}
 
 	def align(self):
 		# Var names from Wikipedia pseudocode
@@ -110,4 +111,13 @@ class NeedlemanWunsch:
 			similarity = 0
 		
 		return str("%.2f" % similarity) + "%"
-
+	
+	# Sets certain key values used in other MSA methods.
+	def score(self):
+		# As defined in section 6.6.1 of the MSA chapter:
+		# x is the number of non-gap positions
+		self.scores["x"] = len(self.A) - self.A.count("-")
+		# y is the number of identical positions
+		self.scores["y"] = len([i for i, j in zip(self.A, self.B) if i == j])
+		# 1-y/x: Pairwise distance score
+		self.scores["pwd"] = round(1.0 - float(self.scores["y"]) / float(self.scores["x"]), 3)
