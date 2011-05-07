@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+	<title>Needleman-Wunsch</title>
+	<link href="static/styles.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="static/ajax.js"></script>
+	<script type="text/javascript" src="static/highlight.js"></script>
+</head>
+<body onload="init()">
+	<div id="results">
+		<p class="header">Results of {{alg}}</p>
+		<p class="align">Alignment for {{name[0]}}</p>
+		<pre id="align0" class="seq">{{formA}}</pre>
+		<p class="length">Unaligned sequence length: {{lenA}}</p>
+		<p class="align">Alignment for {{name[1]}}</p>
+		<pre id="align1" class="seq">{{formB}}</pre>
+		<p class="length">Unaligned sequence length: {{lenB}}</p>
+		<p>They had a homological similarity of:</p>
+		<pre class="result">{{results["similarity"]}}</pre>
+	</div>
+</body>
+</html>
