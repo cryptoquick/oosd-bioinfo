@@ -120,4 +120,4 @@ class NeedlemanWunsch:
 		# y is the number of identical positions
 		self.scores["y"] = len([i for i, j in zip(self.A, self.B) if i == j])
 		# 1-y/x: Pairwise distance score
-		self.scores["pwd"] = round(1.0 - float(self.scores["y"]) / float(self.scores["x"]), 3)
+		self.scores["pwd"] = round(1.0 - float(self.scores["y"]) / float(self.scores["x"]), 5)
