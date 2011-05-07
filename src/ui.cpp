@@ -315,23 +315,25 @@ void UserInterface::Open(int gap, string method, string data1, string data2)
 
 //These only apply to Alex's python implmentation///////
 
-json::Array UserInterface::getSeqPercent()
+json::Number UserInterface::getSeqPercent()
 {
 	//Use the 'seq1->simPercent' as that will forward you the percentage difference.
-	json::Array seqPercent;
-	seqPercent.Insert(json::String(seq1->getSequence()));
+	json::Number seqPercent = json::Number(seq1->simPercent);
 	return seqPercent;
-	//return seq1->simPercent;
 }
 
 json::Array UserInterface::seqDiffArray()
 {
 	//Use the 'seq1->simPercent' as that will forward you the difference matrix.
 	json::Array seqDiffArray;
-	seqDiffArray.Insert(json::String(seq1->getSequence()));
-	seqDiffArray.Insert(json::String(seq2->getSequence()));
+	
+	vector<int>::iterator it;
+	for (it=seq1->seqDiff.begin() ; it < seq1->seqDiff.end(); it++)
+	{
+		seqDiffArray.Insert(json::Number(*it));
+	}
+	
 	return seqDiffArray;
-	//return seq1->seqDiff;
 }
 
 

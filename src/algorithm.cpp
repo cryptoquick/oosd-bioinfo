@@ -86,7 +86,7 @@ int Algorithm::Score(Sequence* seq1, Sequence* seq2)
 {
 	//TEMPORARY SCORING VARIABLES
 	const int scoreBonus = 1;
-	const int scoreWrong = 0;
+//	const int scoreWrong = 0;
     int same = 0;
 
     if(seq1->getLength() > 0 && seq2->getLength())
@@ -98,29 +98,21 @@ int Algorithm::Score(Sequence* seq1, Sequence* seq2)
     		}
     		else if(seq2->seq[i] == '-')
     		{
-    			same = same - penalty;
-			seq1->seqDiff.push_back(i);
+    		//	same = same - penalty;
+				seq1->seqDiff.push_back(i);
     		}
     		else
     		{
-    			same = same - scoreWrong;
+    		//	same = same - scoreWrong;
+				seq1->seqDiff.push_back(i);
     		}
     	}
-    	float pct = (static_cast<float>(same) / static_cast<float>(seq1->getLength())) * 100;
+    	
+		float pct = (static_cast<float>(same) / static_cast<float>(seq1->getLength())) * 100.0;
 
-	seq1->simPercent = pct;
+		seq1->simPercent = pct;
 
-    //	cout << "Seq 1 and 2 are " << pct << "% identical\n" << endl;
-    	return pct;
-
-/*
-	for(int j = 0; j<i; j++)
-	{
-		cout<<seq1->seqDiff[i];
-	}
-*/
-cout<<endl;
-	
+    	return pct;	
     }
     else
     {

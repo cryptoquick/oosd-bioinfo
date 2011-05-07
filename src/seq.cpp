@@ -18,8 +18,7 @@ Sequence::Sequence(char *p)
 		seq.push_back(data[i]);
 	}
 
-simPercent = 0.0f;
-
+	simPercent = 0.0f;
 }
 
 Sequence::Sequence(string data)

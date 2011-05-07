@@ -19,6 +19,7 @@ int main(int argc, char* argv[])
 		{
 			UserInterface *ui = new UserInterface(false);
 			
+			// Use JSON to process input argument.
 			string input = argv[2];
 			istringstream iss (input, istringstream::in);
 			json::Object elRoot;
@@ -28,40 +29,27 @@ int main(int argc, char* argv[])
 			json::String method = json::String(elRoot["algorithm"]);
 			json::String data1 = elRoot["seqs"][0];
 			json::String data2 = elRoot["seqs"][1];
-		
+			
+			// Use JSON values to really run the program.
 			ui->Open(gap.Value(), method.Value(), data1.Value(), data2.Value());
 			
-			// JSON formatting.
+			// JSON output formatting.
 			json::Object jsobj;
 			json::Array seqArr = ui->Print();
+			json::Number simNum = ui->getSeqPercent();
+			json::Array diffArr = ui->seqDiffArray();
+			
 			jsobj["alignments"] = seqArr;
+			jsobj["similarity"] = simNum;
+			jsobj["diffs"] = diffArr;
 			
 			// Output stream.
 			ostringstream oss (ostringstream::out);
 			
-			// JSON formatting.
-		//	json::Object jsobj;
-		//	jsobj["alignments"] = ui->Print();
-			
 			// Output JSON string.
 			json::Writer::Write(jsobj, oss);
-		//	json::Writer::Write(elRoot, oss);
 			cout << oss.str();
 			
-		/*	json::Object jsobj;
-			jsobj["Name"] = json::String("Schlafly American Pale Ale");
-			jsobj["Origin"] = json::String("St. Louis, MO, USA");
-			jsobj["ABV"] = json::Number(3.8);
-			jsobj["BottleConditioned"] = json::Boolean(true);*/
-			
-			// int gap = (int)argv[2];
-			// 		string method = argv[3];
-			// 		string data1 = argv[4];
-			// 		string data2 = argv[5];
-			// 		
-			// 		ui->Open(gap, method, data1, data2);
-			// 		ui->Compare();
-			// 		ui->Print();
 			delete ui;
 			return 0;
 		}
