@@ -37,9 +37,9 @@ class Bioinformatics:
 			proc = Popen(["./bioinfo", "--json", js], stdout=PIPE)
 			output = proc.communicate()[0]
 			obj = json.loads(output)
-			self.results['similarity'] = 99.0;
-			self.results['alignments'] = (obj["alignments"][0], obj["alignments"][1])
-			self.results['diffs'] = [0,1]
+			self.results['similarity'] = obj["similarity"];
+			self.results['alignments'] = [obj["alignments"][0], obj["alignments"][1]]
+			self.results['diffs'] = obj["diffs"]
 		else:
 			self.alg = NeedlemanWunsch(self.seq[0], self.seq[1])
 			self.alg.gap = self.gap

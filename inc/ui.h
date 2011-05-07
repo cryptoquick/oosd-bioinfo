@@ -40,7 +40,7 @@ public:
 	void Compare(Sequence*, Sequence*, int);
 	
 	//This is for python
-	json::Array getSeqPercent();
+	json::Number getSeqPercent();
 	json::Array seqDiffArray();
 };
 

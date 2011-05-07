@@ -18,7 +18,6 @@ class Sequence: public FileSystem{
 	int len;
 	string data;
 	char* SeqName;
-	
 
 public:
 	Sequence(char *key);
@@ -33,8 +32,8 @@ public:
 	bool checkExistence();
 	string getSequence();
 
-	vector<int> getScoreDiff();
-	int getScorePercent();
+//	vector<int> getScoreDiff();
+//	float getScorePercent();
 
 	vector<char> seq;
 	vector<int> seqDiff;
