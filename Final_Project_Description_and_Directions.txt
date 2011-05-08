@@ -3,6 +3,9 @@ OOSD Group: Alex, Andrew and Luke
 
 Directions:
 
+View on web browser at:
+nanhex.org
+
 Description:
 These are C++ or Python algorithms which perform pairwise alignment against one or more entries. C++ is for two sequence alignment comparison and Python allows for both pairwise and multiple sequence alignment comparisons of the data.
 
@@ -17,7 +20,7 @@ This executable runs a starter program that brings up a user interface in the co
 
 main.py
 -------------------------------------------!
-A main python program which acts as a linker to a series of python applications located in the 'python' folder to access 'sequences_database' database and then upload all the sequences previously imported into the database from the fasta_files folder. Then puts those fasta file sequences online and activates the server which puts them online at the website: nanohex.org. From there they can be sequenced from any computer's browser provided the program is running on the main server that Alex that has set up or your own in which case you can also run it and go to 'http://localhost:5000' in order to view it and conduct the sequence alignments on your computer, provided of course you have the neccesary software.
+A main python program which acts as a linker to a series of python applications located in the 'python' folder to access 'sequences_database' database and then upload all the sequences previously imported into the database from the fasta_files folder. Then puts those fasta file sequences online and activates the server which puts them online at the website: nanhex.org. From there they can be sequenced from any computer's browser provided the program is running on the main server that Alex that has set up or your own in which case you can also run it and go to 'http://localhost:5000' in order to view it and conduct the sequence alignments on your computer, provided of course you have the neccesary software.
 
 update.py 
 ------------------------------------------!
