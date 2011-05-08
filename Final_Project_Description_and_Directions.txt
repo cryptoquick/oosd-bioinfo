@@ -1,0 +1,25 @@
+
+OOSD Group: Alex, Andrew and Luke
+
+Directions:
+
+Description:
+These are C++ or Python algorithms which perform pairwise alignment against one or more entries. C++ is for two sequence alignment comparison and Python allows for both pairwise and multiple sequence alignment comparisons of the data.
+
+Starter Applications:
+bioinfo.exe or main.py:
+------------------------------------------!
+You have two choices to run this program. Either you can run this program via the main.cpp which will run only a singleton that does only a single pairwise alignment between your choices unless you load different sequences. The second one is a python based program which accesses the original code in the C++ files methods using other paths in order to generate both pairwise and multiple sequence alignment for which all the entires are referred from the fasta_file folder.
+
+bioinfo.exe
+-------------------------------------------!
+This executable runs a starter program that brings up a user interface in the command prompt for the user to import two sequences at a time. Then the sequences to be compared against each other and if they are of different lengths then user is allowed to conduct homology of the two sequences of either Needleman&Wunsch or Smith&Waterman. Then once done the gaps are added and returns the sequences which are passed as Sequence objects throughout the files.
+
+main.py
+-------------------------------------------!
+A main python program which acts as a linker to a series of python applications located in the 'python' folder to access 'sequences_database' database and then upload all the sequences previously imported into the database from the fasta_files folder. Then puts those fasta file sequences online and activates the server which puts them online at the website: nanohex.org. From there they can be sequenced from any computer's browser provided the program is running on the main server that Alex that has set up or your own in which case you can also run it and go to 'http://localhost:5000' in order to view it and conduct the sequence alignments on your computer, provided of course you have the neccesary software.
+
+update.py 
+------------------------------------------!
+Updates the database, called 'sequences_database,' can be done through the 'updateDatabase.py' in the python folder which reads all the the files in the fasta_file folder against the database's previous sequences, while ignoring repeated entries.
+
