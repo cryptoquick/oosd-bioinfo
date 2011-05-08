@@ -114,10 +114,26 @@ class NeedlemanWunsch:
 	
 	# Sets certain key values used in other MSA methods.
 	def score(self):
-		# As defined in section 6.6.1 of the MSA chapter:
-		# x is the number of non-gap positions
-		self.scores["x"] = len(self.A) - self.A.count("-")
-		# y is the number of identical positions
-		self.scores["y"] = len([i for i, j in zip(self.A, self.B) if i == j])
-		# 1-y/x: Pairwise distance score
-		self.scores["pwd"] = round(1.0 - float(self.scores["y"]) / float(self.scores["x"]), 5)
+		matches = 0
+		mismatches = 0
+		gapOpenings = 0
+		gapExtensions = 0
+		gapLast = False
+		
+		for pair in zip(self.A, self.B):
+			if pair[0] == pair[1] and pair[0] != "-":
+				matches += 2
+				gapLast = False
+			elif pair[0] != pair[1] and pair[0] != "-":
+				mismatches -= 2
+				gapLast = False
+			elif (pair[0] == "-" or pair[1] == "-") and gapLast:
+				gapExtensions -= 1
+			elif (pair[0] == "-" or pair[1] == "-") and not gapLast:
+				gapOpenings -= 2
+				gapLast = True
+			else:
+				print("Something unaccounted for in scoring.")
+				
+		return sum([matches, mismatches, gapOpenings, gapExtensions])
+		
