@@ -30,66 +30,89 @@ class NeighborJoin:
 	def __init__(self):
 		self.names = []
 		self.seqs = []
-		self.pairwise = [] # Pairwise alignment distance
-		self.scores = []
+		self.d = [] # Pairwise alignment distance
+		self.L = 0 # Number of sequences left
+		self.x = 0 # Number of nodes
+		self.qMatrix = []
 		self.nodeRoot = Node("-1", 0.0)
+		self.dxm = [] # Node distance matrix (for when nodes are added to the tree)
 		
 	def addSeq(self, name):
 		self.names.append(name)
 		self.seqs.append(seqs[name])
-		self.nodeRoot.addNode(Node(str(len(self.seqs) - 1), 0.0))
-		
-	# Fills an index matrix for use in scoring pairwise alignment.
-	def fill(self):
-		size = len(self.seqs)
-		for x in range(size):
-			row = []
-			for y in range(x + 1):
-				row.append([x, y])
-			self.pairwise.append(row)
+		self.nodeRoot.addNode(Node(str(self.L - 1), 0.0))
+		self.L += 1
+		self.x += 1
 
-	# Creates matrix similar to the index matrix, but for pairwise distance scores.
+	# Creates matrix for pairwise distance scores.
 	def init(self):
-		size = len(self.seqs)
-		for row in range(size):
-			self.scores.append([0] * (row + 1))
+		size = self.L
+		self.d = [[0 for i in range(size)] for j in range(size)]
 				
 	def distance(self):
-		for row in self.pairwise:
-			for pair in row:
-				nw = NW(self.seqs[pair[0]], self.seqs[pair[1]])
-				nw.align()
-				nw.score()
-				self.scores[pair[0]][pair[1]] = nw.scores["pwd"]
+		for k, v in enumerate(self.d):
+			for kk, vv in enumerate(v):
+				if k != kk:
+					nw = NW(self.seqs[k], self.seqs[kk])
+					nw.align()
+					self.d[k][kk] = nw.score()
+				else:
+					self.d[k][kk] = 0
+	
+	# Q Matrix calculator with epic one-liner lambda-mapping.
+	def Q(self, i, j):
+		expr1 = (self.L - 2) * self.d[i][j]
+		expr2 = sum(self.d[i]) + sum([n for n in list(map(lambda *x:x, *self.d))[i] if n != None])
+		expr3 = sum(self.d[j]) + sum([n for n in list(map(lambda *x:x, *self.d))[j] if n != None])
+		return expr1 - expr2 - expr3
+	
+	def calcQ(self):
+		for k, v in enumerate(self.d):
+			qrow = []
+			for kk, vv in enumerate(v):
+				qrow.append(self.Q(k, kk))
+			self.qMatrix.append(qrow)
 	
 	def findLowest(self):
-		lowest = 1.0
+		lowest = 999999
 		pos = []
-		for k, v in enumerate(self.scores):
+		for k, v in enumerate(self.d):
 			for kk, vv in enumerate(v):
-				if kk != (len(v) - 1):
+				if vv != 0:
 					if vv < lowest:
 						lowest = vv
 						pos = [k, kk]
 		return lowest, pos
+		
+	def nodeFusion(self, seqA, seqB):
+		newNode = Node(str(self.x), 0.0)
+	#	self.nodeRoot.addNode()
+		distanceA = 0
+		self.nodeRoot.addNode(Node(str(seqA), distanceA))
+		
+		self.L -= 1
+		self.x += 1
 	
-	def nodeFusion(self):
-		pass
+	# Controls the many operations required to produce a Neighbor Join.
+	def start(self):
+		print("Number of sequences left: " + str(self.L))
+		self.init()
+		self.distance()
+		print(self.d)
+		self.calcQ()
+		print(self.qMatrix)
+		lowest = self.findLowest()
+		self.nodeFusion(lowest[1][0], lowest[1][1])
+	#	print()
+		print(self.nodeRoot.walk())
 
 def test():
 	nj = NeighborJoin()
-	
+
 	names = ["M90848", "M90849", "M90850", "M90851", "M90852"]
 	for name in names:
 		nj.addSeq(name)
 	
-	nj.fill()
-	nj.init()
-	nj.distance()
-	nj.findLowest()
-	
-	print(nj.pairwise)
-	print(nj.scores)
-	print(nj.nodeRoot.walk())
+	nj.start()
 	
 test()
