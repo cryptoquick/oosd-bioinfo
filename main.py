@@ -5,6 +5,7 @@ from python.load import readfiles
 from python.bio import Bioinformatics as Bio
 import json, textwrap, math
 from flask import Flask, render_template, request, Markup
+from buzhug import TS_Base
 
 ### Bioinformatics
 
