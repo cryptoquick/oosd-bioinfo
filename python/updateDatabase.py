@@ -7,7 +7,7 @@ from buzhug import TS_Base
 #########createDatabase function simply makes the database, if it already exists it ignores##########
 def createDatabase():
 	#Creates the database with three parts. Create only once!!! 
-	sequences = TS_Base('sequences_database')
+	sequences = TS_Base('../sequences_database')
 	sequences.create(('name', str),('sequence',str),('person',str))
 
 #A createDatabase function caller in case you need to make a new database.
@@ -27,7 +27,7 @@ def updateDatabase():
 	seqs = {}
 
 	#Open the database
-	sequences = TS_Base('sequences_database')
+	sequences = TS_Base('../sequences_database')
 	sequences = sequences.open()
 
 	#This imports all the files from the. If the value exists then skips
