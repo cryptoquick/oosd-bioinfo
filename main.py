@@ -16,8 +16,12 @@ biocpp = True
 ### Web Interface
 
 bio = Bio() # TODO make more modular / OO
-bio.seqs = readfiles() # TODO database
 
+db = TS_Base("python/sequences_database")
+db.open()
+print(db.fields)
+bio.seqs = db.select(['sequence']) # TODO database
+#print(bio.seqs)
 app = Flask(__name__)
 
 @app.route("/")
@@ -64,3 +68,4 @@ if __name__ == "__main__":
 	app.debug = True
 	app.run()
 
+db.close()
