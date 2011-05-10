@@ -86,7 +86,7 @@ class NeighborJoin:
 		
 	def nodeFusion(self, seqA, seqB):
 		newNode = Node(str(self.x), 0.0)
-	#	self.nodeRoot.addNode()
+		self.nodeRoot.addNode()
 		distanceA = 0
 		self.nodeRoot.addNode(Node(str(seqA), distanceA))
 		
@@ -103,7 +103,6 @@ class NeighborJoin:
 		print(self.qMatrix)
 		lowest = self.findLowest()
 		self.nodeFusion(lowest[1][0], lowest[1][1])
-	#	print()
 		print(self.nodeRoot.walk())
 
 def test():

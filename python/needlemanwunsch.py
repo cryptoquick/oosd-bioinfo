@@ -4,7 +4,6 @@ class NeedlemanWunsch:
 		self.seq2 = seq2
 		self.A = ""
 		self.B = ""
-		self.done = False
 		self.diffs = []
 		self.gap = -5;
 		self.scores = {'x': 0, 'y': 0, 'pwd': 0.0}
@@ -75,8 +74,6 @@ class NeedlemanWunsch:
 		
 		self.A = AlignmentA
 		self.B = AlignmentB
-		
-		self.done = True
 
 	# Similarity
 	def homology(self):
