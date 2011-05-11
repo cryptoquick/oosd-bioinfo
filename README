@@ -13,9 +13,9 @@ released under the GPL since 1302863129
 - simple homology comparison
 - web interface
 - difference highlighting
+- sequence database (can be loaded from local files)
 
 to come:
-- sequence database (can be loaded from local files)
 - multi-sequence alignment
 - phylogeny trees
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from python.needlemanwunsch import NeedlemanWunsch
-from python.load import readfiles
+import python.load
 from python.bio import Bioinformatics as Bio
 import json, textwrap, math
 from flask import Flask, render_template, request, Markup
@@ -16,12 +16,6 @@ biocpp = True
 ### Web Interface
 
 bio = Bio() # TODO make more modular / OO
-
-db = TS_Base("python/sequences_database")
-db.open()
-print(db.fields)
-bio.seqs = db.select(['sequence']) # TODO database
-#print(bio.seqs)
 app = Flask(__name__)
 
 @app.route("/")
@@ -61,7 +55,7 @@ def diffs():
 @app.route("/seqs", methods=['POST'])
 def seqs():
 	if request.method == 'POST':
-		return json.dumps(sorted([s[0] for s in bio.seqs.iteritems()]))
+		return json.dumps(sorted([s[0] for s in python.load.readfiles().iteritems()]))
 
 # Run web app.
 if __name__ == "__main__":
