@@ -1,17 +1,21 @@
 import fileinput
-import os
+import os, sys
 import glob
 
 from buzhug import TS_Base
 
+dbdir = "db" # To be run from bioinfo directory. (python python/updateDatabase.py)
+
 #########createDatabase function simply makes the database, if it already exists it ignores##########
 def createDatabase():
 	#Creates the database with three parts. Create only once!!! 
-	sequences = TS_Base('../sequences_database')
+	sequences = TS_Base(dbdir)
 	sequences.create(('name', str),('sequence',str),('person',str))
 
-#A createDatabase function caller in case you need to make a new database.
-#createDatabase()
+## Create directory db if it doesn't exist.
+if not os.path.exists(dbdir):
+	#A createDatabase function caller in case you need to make a new database.
+	createDatabase()
 
 #########([default] updateDatabase function updates and returns all the sequences in the database###############
 def updateDatabase():
@@ -27,11 +31,15 @@ def updateDatabase():
 	seqs = {}
 
 	#Open the database
-	sequences = TS_Base('../sequences_database')
+	sequences = TS_Base(dbdir)
 	sequences = sequences.open()
 
-	#This imports all the files from the. If the value exists then skips
-	path = '../fasta_data/'
+	#This imports all the files from the directory. If the value exists then skips
+	path = 'fasta_data'
+	
+	if not os.path.exists(path):
+		raise Exception('Invalid path.')
+	
 	for infile in glob.glob( os.path.join(path, '*.fasta') ):
 		#Splits the path to exclude the '../fasta_data' in the path 
 		splitstr1 = infile.split(path, len(infile))
@@ -84,7 +92,7 @@ def updateDatabase():
 	###All the debuggers, feel free to comment them out
 	#prints out the total number of sequences in the database:
 	print ""
-	print "***The total number of sequences in the 'sequence_database' are:"
+	print "***The total number of sequences in " + path +" are:"
 	print len(sequences)
 
 	#prints out all the sequence names that are currently in the database

@@ -58,7 +58,7 @@ readfiles()
 #If you want to add more fasta files to the database, simply put them in the fasta_data folder and run the updateDatabase.py file in the terminal(not in this file) and it will dynamically update the database.
 
 def readfiles():
-	sequences = TS_Base('sequences_database')
+	sequences = TS_Base('db')
 	sequences = sequences.open()
 	see = sequences.select(None)
 
