@@ -1,6 +1,6 @@
 
 #include <vector>
-#include "inc/needleman.h"
+#include "needleman.h"
 #include "c_node.h"
 #include "c_tree.h"
 #include "msa.h"

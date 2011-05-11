@@ -1,4 +1,4 @@
-SRCS		= main ui file seq needleman_wunsch smith algorithm
+SRCS		= main ui file seq needleman_wunsch smith algorithm c_node c_tree needleman msa
 OUT			= bioinfo
 OBJDIR		= obj
 SRCDIR		= src
