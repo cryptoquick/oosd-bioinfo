@@ -44,24 +44,18 @@ def updateDatabase():
 		#Splits the path to exclude the '../fasta_data' in the path 
 		splitstr1 = infile.split(path, len(infile))
 		splitstr2 = splitstr1[1]
-
+		
 		#Splits the path once again by getting rid of hte .fasta abrevation at the end
 		splitstr3 = splitstr2.split('.', len(infile))
 		splitstr4 = splitstr3[0]
 		filenamehold = splitstr4
+	#	print(filenamehold)
 
 		#Splits the string by the first 6 characters for which are assigned to the sequence name
-		m = 0
-		filename = ""
-		while (m < 6):
-			filename = filename + filenamehold[m]
-			m = m + 1
-
+		filename = filenamehold[1:7]
+		
 		#Last split which takes characters after the first 6 and puts them into the person portion
-		inputperson = ""
-		while (m < len(filenamehold)):
-			inputperson = inputperson + filenamehold[m]
-			m = m + 1
+		inputperson =  filenamehold[7:]
 		
 		#Makes sure that there are no repeat sequences.
 		if sequences.select(['name'], name=filename):
@@ -125,4 +119,3 @@ def updateDatabase():
 
 #Included for test purposes to test this readfiles function
 updateDatabase()
-#createDatabase()

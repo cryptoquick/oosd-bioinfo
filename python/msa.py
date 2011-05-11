@@ -1,7 +1,5 @@
 from needlemanwunsch import NeedlemanWunsch as NW
-from load import readfiles
-
-seqs = readfiles()
+import load
 
 # Some CS 2 jazz.
 class Node:
@@ -37,9 +35,9 @@ class NeighborJoin:
 		self.nodeRoot = Node("-1", 0.0)
 		self.dxm = [] # Node distance matrix (for when nodes are added to the tree)
 		
-	def addSeq(self, name):
+	def addSeq(self, seq, name):
 		self.names.append(name)
-		self.seqs.append(seqs[name])
+		self.seqs.append(seq)
 		self.nodeRoot.addNode(Node(str(self.L - 1), 0.0))
 		self.L += 1
 		self.x += 1
@@ -110,7 +108,7 @@ def test():
 
 	names = ["M90848", "M90849", "M90850", "M90851", "M90852"]
 	for name in names:
-		nj.addSeq(name)
+		nj.addSeq(load.selectrecord(name), name)
 	
 	nj.start()
 	
