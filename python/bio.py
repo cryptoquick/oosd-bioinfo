@@ -1,5 +1,5 @@
 from subprocess import *
-import argparse, json
+import argparse, json, load
 from needlemanwunsch import NeedlemanWunsch
 
 __all__ = ["Bioinformatics"]
@@ -18,7 +18,7 @@ class Bioinformatics:
 	
 	def addseq(self, seqname):
 		self.name.append(seqname)
-		self.seq.append(self.seqs[seqname]) # db here
+		self.seq.append(load.selectrecord(seqname)) # db here
 	
 	def clearseq(self):
 		self.name = []
