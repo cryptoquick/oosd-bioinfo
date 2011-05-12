@@ -14,7 +14,8 @@ class Bioinformatics:
 		self.algorithm = ""
 		self.error = ""
 		self.cpp = False # Will the program use C++?
-		self.gap = -5;
+		self.gap = -5
+		self.obj = {}
 	
 	def addseq(self, seqname):
 		self.name.append(seqname)
@@ -23,7 +24,18 @@ class Bioinformatics:
 	def clearseq(self):
 		self.name = []
 		self.seq = []
-	
+				
+	def comm(self):
+		obj = {"seqs": self.seq, "gap": self.gap, "algorithm": self.algorithm}
+	#	print(obj)
+		js = json.dumps(obj)
+		proc = Popen(["./bioinfo", "--json", js], stdout=PIPE)
+		output = proc.communicate()[0]
+		print("bioinfo output:")
+		print(output)
+		self.obj = json.loads(output)
+		print(self.obj)
+		
 	def nw(self):
 		if len(self.name) > 2:
 			self.error = "Too many sequences for Needleman-Wunsch."
@@ -32,14 +44,12 @@ class Bioinformatics:
 		
 		# Use bioinfo binary, or native Python implementation?
 		if self.cpp:
-			obj = {"seqs": [self.seq[0], self.seq[1]], "gap": self.gap, "algorithm": self.algorithm}
-			js = json.dumps(obj)
-			proc = Popen(["./bioinfo", "--json", js], stdout=PIPE)
-			output = proc.communicate()[0]
-			obj = json.loads(output)
-			self.results['similarity'] = obj["similarity"];
-			self.results['alignments'] = [obj["alignments"][0], obj["alignments"][1]]
-			self.results['diffs'] = obj["diffs"]
+			self.comm()
+		#	self.results['similarity'] = self.obj["similarity"];
+			self.results['similarity'] = 0.0;
+			self.results['alignments'] = [self.obj["alignments"][0], self.obj["alignments"][1]]
+		#	self.results['diffs'] = self.obj["diffs"]
+			self.results['diffs'] = []
 		else:
 			self.alg = NeedlemanWunsch(self.seq[0], self.seq[1])
 			self.alg.gap = self.gap
@@ -47,3 +57,9 @@ class Bioinformatics:
 			self.results['similarity'] = self.alg.homology()
 			self.results['alignments'] = [self.alg.A, self.alg.B]
 			self.results['diffs'] = self.alg.diffs
+			
+	def msa(self):
+		if self.cpp:
+			self.comm()
+			self.results['alignments'] = [self.obj["alignments"][0], self.obj["alignments"][1]]
+			self.results['tree'] = self.obj["tree"]

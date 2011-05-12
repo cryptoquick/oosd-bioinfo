@@ -13,8 +13,6 @@ int main(int argc, char* argv[])
 		
 		if (s1.compare(s2) == 0)
 		{
-			
-			
 			// Use JSON to process input argument.
 			string input = argv[2];
 			istringstream iss (input, istringstream::in);
@@ -30,12 +28,15 @@ int main(int argc, char* argv[])
 			json::Object jsobj;
 			json::Array seqArr;
 			json::Array diffArr;
+			json::Number simNum;
+			json::String tree;
 			
-			string jsnw = "needleman";
-			string jsmith = "smith";
-			string jsmsa = "msa";
-			
-			if (method.Value().compare(jsnw) == 0) {
+			string s3 (method.Value());
+			string jsnw ("needleman");
+			string jsmith ("smith");
+			string jsmsa ("msa");
+		//	cout << method.Value();
+			if (s3.compare(jsnw) == 0) {
 				UserInterface *ui = new UserInterface(false);
 				
 				// Use JSON values to really run the program.
@@ -43,12 +44,16 @@ int main(int argc, char* argv[])
 
 				// JSON output formatting.
 				seqArr = ui->Print();
-			//	simNum = ui->getSeqPercent();
+				simNum = ui->getSeqPercent();
 				diffArr = ui->seqDiffArray();
+				
+				jsobj["alignments"] = seqArr;
+				jsobj["similarity"] = simNum;
+				jsobj["diffs"] = diffArr;
 				
 				delete ui;
 			}
-			else if (method.Value().compare(jsmsa) == 0) {
+			else if (s3.compare(jsmsa) == 0) {
 				MSA *msa = new MSA();
 				
 				for (unsigned int i = 0; i < data.Size(); i++) {
@@ -61,10 +66,14 @@ int main(int argc, char* argv[])
 				
 				msa->align();
 				seqArr = msa->printSeqs();
+				tree = json::String(msa->printTree());
+				
+				jsobj["alignments"] = seqArr;
+				jsobj["tree"] = tree;
 			}
-			
-			jsobj["alignments"] = seqArr;
-		//	jsobj["diffs"] = diffArr;
+			else {
+				cout << "no algorithm matched.";
+			}
 			
 			// Output stream.
 			ostringstream oss (ostringstream::out);
@@ -72,8 +81,6 @@ int main(int argc, char* argv[])
 			// Output JSON string.
 			json::Writer::Write(jsobj, oss);
 			cout << oss.str();
-			
-			return 0;
 		}
 	}
 	else

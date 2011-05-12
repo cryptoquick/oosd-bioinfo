@@ -47,7 +47,7 @@ public:
 	MSA();
 	void addSeq(vector <char> s);
 	json::Array printSeqs();
-	void printTree();
+	string printTree();
 	void align();
 
 };
