@@ -16,7 +16,7 @@ C_Tree::C_Tree() {
 
 void C_Tree::killIt(C_Node* k) {
 	if(k->children.size() != 0) {
-		for(int i = 0; i < k->children.size(); i++) {
+		for(unsigned int i = 0; i < k->children.size(); i++) {
 			killIt(k->children[i]);
 		}
 	}

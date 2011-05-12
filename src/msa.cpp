@@ -4,6 +4,12 @@
 #include "c_node.h"
 #include "c_tree.h"
 #include "msa.h"
+
+// JSON
+#include "../json/reader.h"
+#include "../json/writer.h"
+#include "../json/elements.h"
+
 using namespace std;
 
 
@@ -19,33 +25,38 @@ void MSA::addSeq(vector <char> s) {
 	seqs.insert(seqs.end(), s);
 }
 
-void MSA::printSeqs() {
-	for(int i = 0; i < seqs.size(); i++) {
-		for(int j = 0; j < seqs[i].size(); j++) {
-			cout << seqs[i][j];
+json::Array MSA::printSeqs() {
+	json::Array seqsarr;
+	
+	for(unsigned int i = 0; i < seqs.size(); i++) {
+		string seqstr = "";
+		for(unsigned int j = 0; j < seqs[i].size(); j++) {
+			seqstr += seqs[i][j];
 		}
-		cout << endl;
+		seqsarr.Insert(json::String(seqstr));
 	}
+	
+	return seqsarr;
 }
 
 void MSA::buildTree() {
 	C_Node* r = tree->getRoot();
-	for(int i = 0; i < seqs.size(); i ++) {
+	for(unsigned int i = 0; i < seqs.size(); i ++) {
 		r->addChild(new C_Node(i));
 	}
 }
 
 float MSA::addDistInit(C_Node* n) {
 	float res = 0;
-	tot = 0;
+	total = 0;
 	for(int i = 0; i < 2; i++)
 		res += addDist(n->children[i]);
 	return res;
 }
 
 float MSA::addDist(C_Node* n) {
-	tot++;
-	float res = n->dist;
+	total++;
+	float res = n->getDist();
 	if(n->children.size() != 0) {
 		for(int i = 0; i < 2; i++) {
 			res+= addDist(n->children[i]);
@@ -119,7 +130,7 @@ void MSA::calcDist() {
 void MSA::calcQ() {
 	// Initialize q and sigma matrices, r and min variables, fetch root
 	q = vector<vector <float> >((seqs.size()), vector <float> (seqs.size()));
-	C_Node *tRoot = tree->getRoot();
+//	C_Node *tRoot = tree->getRoot();
 	int r = tree->getRoot()->children.size();
 	vector <float> sigma (r, 0);
 	min_x = min_y = min = 0;
@@ -158,7 +169,7 @@ void MSA::calcQ() {
 
 
 void MSA::clusterUp() {
-	clusters = vector < C_Node* > (seqs.size(), NULL);
+	//clusters = (seqs.size(), NULL);
 	C_Node* tRoot = tree->getRoot();
 
 	while(tRoot->children.size() > 3) {
@@ -197,7 +208,7 @@ void MSA::clusterUp() {
 void MSA::lineEmUp(C_Node* n) {
 	// If root, recursively call on all children
 	if(n == tree->getRoot()) {
-		for(int i = 0; i < n->children.size(); i++) {
+		for(unsigned int i = 0; i < n->children.size(); i++) {
 			if(n->children[i]->children.size() > 0)
 				lineEmUp(n->children[i]);
 		}
@@ -251,10 +262,10 @@ void MSA::lineEmUp(C_Node* n) {
 
 void MSA::lineEmUpCleanUp() {
 	C_Node* tRoot = tree->getRoot();
-	for(int i = 0; i < tRoot->children.size(); i++) {
+	for(unsigned int i = 0; i < tRoot->children.size(); i++) {
 		if(tRoot->children[i]->children.size() == 0) {
 			C_Node* cur;
-			for(int j = 0; j < tRoot->children.size(); j++) {
+			for(unsigned int j = 0; j < tRoot->children.size(); j++) {
 				if(tRoot->children[j]->children.size() > 0)
 					cur = tRoot->children[j];
 			}
@@ -286,12 +297,12 @@ void MSA::align() {
 
 void MSA::printTree() {
 	C_Node* tRoot = tree->getRoot();
-	for(int i = 0; i < tRoot->children.size(); i++) {
+	for(unsigned int i = 0; i < tRoot->children.size(); i++) {
 		cout << "S" << tRoot->children[i]->getKey() << " ";
 	}
 	cout << endl;
-	for(int i = 0; i < tRoot->children.size(); i++) {
-		for(int j = 0; j < tRoot->children[i]->children.size(); j++) {
+	for(unsigned int i = 0; i < tRoot->children.size(); i++) {
+		for(unsigned int j = 0; j < tRoot->children[i]->children.size(); j++) {
 			cout << "S" << tRoot->children[i]->children[j]->getKey() << " ";
 		}
 	}

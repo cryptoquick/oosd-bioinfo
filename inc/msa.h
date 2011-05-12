@@ -15,6 +15,11 @@
 #include "c_tree.h"
 using namespace std;
 
+// JSON
+#include "../json/reader.h"
+#include "../json/writer.h"
+#include "../json/elements.h"
+
 class MSA {
 	void calcDist();
 	void calcQ();
@@ -28,10 +33,11 @@ class MSA {
 
 	vector< vector <float> > dist;
 	vector< vector <float> > q;
+//	vector< vector <C_Node*> > clusters;
 	int min_x, min_y;
 	float min;
 	int total;
-
+	float avg;
 
 public:
 
@@ -40,7 +46,7 @@ public:
 
 	MSA();
 	void addSeq(vector <char> s);
-	void printSeqs();
+	json::Array printSeqs();
 	void printTree();
 	void align();
 
