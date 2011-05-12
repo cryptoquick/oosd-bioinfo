@@ -1,8 +1,53 @@
 <!doctype html>
 <html>
 <head>
-	<title>Needleman-Wunsch</title>
+	<title>MSA</title>
 	<link href="static/styles.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="static/raphael-min.js" ></script> 
+	<script type="text/javascript" src="static/jsphylosvg-min.js"></script> 
+	<script type="text/javascript">
+		function init() {
+			var dataObject = { newick: document.getElementById("hidden").innerText };
+			
+			Smits.PhyloCanvas.Render.Style = {
+				/* Default Styles */	
+				line: {
+					"stroke": 		'rgb(0,0,0)',
+					"stroke-width":	3
+				},
+				text: {
+					"font-family":	'Verdana',
+					"font-size":	14,
+					"text-anchor":	'start'
+				},
+				path: {
+					"stroke": 		'rgb(0,0,0)',
+					"stroke-width":	3	
+				},
+				connectedDash : {
+					"stroke": 			'rgb(200,200,200)',
+					"stroke-dasharray":	". "
+				},
+				textSecantBg : {
+					"fill": 	'#EEE',
+					"stroke":	'#DDD'
+				},
+				highlightedEdgeCircle : {
+					"fill": 	'red'
+				},
+				barChart : {
+					fill:		'#003300',
+					stroke:		'#DDD'
+				}
+			}
+			
+			phylocanvas = new Smits.PhyloCanvas(
+				dataObject,
+				'svgCanvas', 
+				500, 500
+			);
+		}
+	</script>
 </head>
 <body onload="init()">
 	<div id="results">
@@ -12,8 +57,8 @@
 			<p class="align">Alignment for {{item[1]}}</p>
 			<pre id="align" class="seq">{{item[0]}}</pre>
 		{% endfor %}
-		<p>Tree:</p>
-		<pre class="result">{{tree}}</pre>
+		<div id="svgCanvas"></div>
+		<pre id="hidden">{{tree}}</pre>
 	</div>
 </body>
 </html>

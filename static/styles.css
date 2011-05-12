@@ -77,3 +77,7 @@ p, pre {
 	font-weight: none;
 	padding: 20px;
 }
+
+#hidden {
+	display: none;
+}
