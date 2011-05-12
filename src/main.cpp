@@ -2,11 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include "ui.h"
-
-// JSON
-#include "../json/reader.h"
-#include "../json/writer.h"
-#include "../json/elements.h"
+#include "msa.h"
 
 int main(int argc, char* argv[])
 {
@@ -17,7 +13,7 @@ int main(int argc, char* argv[])
 		
 		if (s1.compare(s2) == 0)
 		{
-			UserInterface *ui = new UserInterface(false);
+			
 			
 			// Use JSON to process input argument.
 			string input = argv[2];
@@ -27,21 +23,48 @@ int main(int argc, char* argv[])
 			
 			json::Number gap = json::Number(elRoot["gap"]);
 			json::String method = json::String(elRoot["algorithm"]);
+			json::Array data = elRoot["seqs"];
 			json::String data1 = elRoot["seqs"][0];
 			json::String data2 = elRoot["seqs"][1];
 			
-			// Use JSON values to really run the program.
-			ui->Open(gap.Value(), method.Value(), data1.Value(), data2.Value());
-			
-			// JSON output formatting.
 			json::Object jsobj;
-			json::Array seqArr = ui->Print();
-			json::Number simNum = ui->getSeqPercent();
-			json::Array diffArr = ui->seqDiffArray();
+			json::Array seqArr;
+			json::Array diffArr;
+			
+			string jsnw = "needleman";
+			string jsmith = "smith";
+			string jsmsa = "msa";
+			
+			if (method.Value().compare(jsnw) == 0) {
+				UserInterface *ui = new UserInterface(false);
+				
+				// Use JSON values to really run the program.
+				ui->Open(gap.Value(), method.Value(), data1.Value(), data2.Value());
+
+				// JSON output formatting.
+				seqArr = ui->Print();
+			//	simNum = ui->getSeqPercent();
+				diffArr = ui->seqDiffArray();
+				
+				delete ui;
+			}
+			else if (method.Value().compare(jsmsa) == 0) {
+				MSA *msa = new MSA();
+				
+				for (unsigned int i = 0; i < data.Size(); i++) {
+					json::String jsdata = data[i];
+					Sequence * seq;
+					seq = new Sequence(jsdata.Value());
+					vector<char> seqdata = seq->get();
+					msa->addSeq(seqdata);
+				}
+				
+				msa->align();
+				seqArr = msa->printSeqs();
+			}
 			
 			jsobj["alignments"] = seqArr;
-			jsobj["similarity"] = simNum;
-			jsobj["diffs"] = diffArr;
+		//	jsobj["diffs"] = diffArr;
 			
 			// Output stream.
 			ostringstream oss (ostringstream::out);
@@ -50,7 +73,6 @@ int main(int argc, char* argv[])
 			json::Writer::Write(jsobj, oss);
 			cout << oss.str();
 			
-			delete ui;
 			return 0;
 		}
 	}

@@ -5,6 +5,9 @@
  *      Author: andrew
  */
 
+#ifndef __NEEDLEMAN_H
+#define __NEEDLEMAN_H
+
 #include <vector>
 #include <iostream>
 using namespace std;
@@ -35,3 +38,5 @@ public:
 	vector <char> aligned2;
 	double dist;
 };
+
+#endif

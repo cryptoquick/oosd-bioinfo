@@ -128,10 +128,10 @@ void Needleman::printScores() {
 		cout << endl;
 	} // End row
 
-	for(int i = 0; i < aligned1.size(); i++)
+	for(unsigned int i = 0; i < aligned1.size(); i++)
 		cout << aligned1[i];
 	cout << endl;
-	for(int i = 0; i < aligned2.size(); i++)
+	for(unsigned int i = 0; i < aligned2.size(); i++)
 		cout << aligned2[i];
 	cout << endl;
 }

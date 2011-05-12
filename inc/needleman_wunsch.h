@@ -1,5 +1,5 @@
-#ifndef __NEEDLEMAN_H
-#define __NEEDLEMAN_H
+#ifndef __NEEDLEMANW_H
+#define __NEEDLEMANW_H
 
 #include <vector>
 using namespace std;
