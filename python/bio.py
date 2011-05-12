@@ -31,10 +31,10 @@ class Bioinformatics:
 		js = json.dumps(obj)
 		proc = Popen(["./bioinfo", "--json", js], stdout=PIPE)
 		output = proc.communicate()[0]
-		print("bioinfo output:")
-		print(output)
+	#	print("bioinfo output:")
+	#	print(output)
 		self.obj = json.loads(output)
-		print(self.obj)
+	#	print(self.obj)
 		
 	def nw(self):
 		if len(self.name) > 2:
@@ -61,5 +61,5 @@ class Bioinformatics:
 	def msa(self):
 		if self.cpp:
 			self.comm()
-			self.results['alignments'] = [self.obj["alignments"][0], self.obj["alignments"][1]]
+			self.results['alignments'] = [sq for sq in self.obj["alignments"]]
 			self.results['tree'] = self.obj["tree"]

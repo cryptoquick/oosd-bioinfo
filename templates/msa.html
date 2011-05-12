@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+<head>
+	<title>Needleman-Wunsch</title>
+	<link href="static/styles.css" rel="stylesheet" type="text/css">
+</head>
+<body onload="init()">
+	<div id="results">
+		<p class="header">Results of Multi-Sequence Alignment</p>
+		
+		{% for item in items %}
+			<p class="align">Alignment for {{item[1]}}</p>
+			<pre id="align" class="seq">{{item[0]}}</pre>
+		{% endfor %}
+		<p>Tree:</p>
+		<pre class="result">{{tree}}</pre>
+	</div>
+</body>
+</html>

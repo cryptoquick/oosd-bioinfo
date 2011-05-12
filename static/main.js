@@ -24,8 +24,12 @@ function select(type) {
 	if (type == "msa") {
 		nw.className = "button";
 		msa.className = "buttonhi";
-		seqnum.innerText = "Select many to align." + " Not functional at the moment.";
+		seqnum.innerText = "Select up to six align.";
 		alg = "msa";
+		
+		var gobut = document.getElementById("gobut");
+		gobut.innerHTML = "MSA:&nbsp;";
+		gobut.href = "msa?seqs=";
 	}
 	else if (type == "nw") {
 		msa.className = "button";
@@ -58,7 +62,19 @@ function seq(seqname) {
 		}
 	}
 	else if (alg == "msa") {
-		seq_queue.push(seqname);
+		if (seq_queue.length < 6) {
+			console.log(seq_queue.length);
+			seq_queue.push(seqname);
+			el.className = "buttonhi";
+			if (seq_queue.length > 1) {
+				gobut.innerHTML +=  ",&nbsp;" + seqname;
+				gobut.href += "," + seqname;
+			}
+			else {
+				gobut.innerHTML += seqname;
+				gobut.href += seqname;
+			}
+		}
 	}
 	else {
 		gobut.innerText = "Please select sequences.";
