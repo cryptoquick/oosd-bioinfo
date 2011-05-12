@@ -4,6 +4,7 @@
 #include "c_node.h"
 #include "c_tree.h"
 #include "msa.h"
+#include <sstream>
 
 // JSON
 #include "../json/reader.h"
@@ -35,7 +36,6 @@ json::Array MSA::printSeqs() {
 		}
 		seqsarr.Insert(json::String(seqstr));
 	}
-	
 	return seqsarr;
 }
 
@@ -284,7 +284,7 @@ void MSA::lineEmUpCleanUp() {
 
 void MSA::lineEmUpInit() {
 	lineEmUp(tree->getRoot());
-	lineEmUpCleanUp();
+//	lineEmUpCleanUp(); // Might want to fix this?
 }
 
 
@@ -295,19 +295,36 @@ void MSA::align() {
 }
 
 
-void MSA::printTree() {
+string MSA::printTree() {
+	string output = "";
 	C_Node* tRoot = tree->getRoot();
 	for(unsigned int i = 0; i < tRoot->children.size(); i++) {
-		cout << "S" << tRoot->children[i]->getKey() << " ";
+		output += "S";
+		
+		int key = tRoot->children[i]->getKey();
+		std::string s;
+		std::stringstream out;
+		out << key;
+		s = out.str();
+		
+		output += s;
+		output += " ";
 	}
-	cout << endl;
+	output += "\n";
 	for(unsigned int i = 0; i < tRoot->children.size(); i++) {
 		for(unsigned int j = 0; j < tRoot->children[i]->children.size(); j++) {
-			cout << "S" << tRoot->children[i]->children[j]->getKey() << " ";
+			output += "S";
+			
+			int key = tRoot->children[i]->children[j]->getKey();
+			std::string s;
+			std::stringstream out;
+			out << key;
+			s = out.str();
+			
+			output += s;
+			output += " ";
 		}
 	}
-	cout << endl;
+	return output;
 }
-
-
 

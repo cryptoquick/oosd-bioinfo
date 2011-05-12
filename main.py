@@ -57,6 +57,18 @@ def seqs():
 	if request.method == 'POST':
 		return json.dumps(sorted([s[0] for s in python.load.readfiles().iteritems()]))
 
+@app.route("/msa")
+def msa():
+	bio.algorithm = "msa"
+	bio.cpp = True
+	bio.clearseq()
+	bio.addseq(str(request.args['s1']))
+	bio.addseq(str(request.args['s2']))
+	bio.addseq(str(request.args['s3']))
+	bio.msa()
+	
+	return bio.results['tree']
+	
 # Run web app.
 if __name__ == "__main__":
 	app.debug = True
