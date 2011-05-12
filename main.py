@@ -45,7 +45,7 @@ def nw():
 			lenA = len(bio.seq[0]),
 			lenB = len(bio.seq[1]))
 	else:
-		return bio.error + "bla"
+		return bio.error + " error!"
 
 @app.route("/diffs", methods=['POST'])
 def diffs():
@@ -62,12 +62,17 @@ def msa():
 	bio.algorithm = "msa"
 	bio.cpp = True
 	bio.clearseq()
-	bio.addseq(str(request.args['s1']))
-	bio.addseq(str(request.args['s2']))
-	bio.addseq(str(request.args['s3']))
-	bio.msa()
+	seqs = str(request.args['seqs']).split(',')
 	
-	return bio.results['tree']
+	if len(seqs) <= 6:
+		[bio.addseq(s) for s in seqs]
+		bio.msa()
+		items = zip(bio.results['alignments'], bio.name)
+		return render_template('msa.html',
+			items = items,
+			tree = bio.results['tree'])
+	else:
+		return "Too many sequences!"
 	
 # Run web app.
 if __name__ == "__main__":

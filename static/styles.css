@@ -5,11 +5,13 @@ body, html {
 	font-family: sans-serif;
 	font-size: 16px;
 	color: black;
+}
+
+p, pre {
+	margin: 10px; 
 	word-wrap: break-word;
 	overflow: hidden;
 }
-
-p, pre {margin: 10px;}
 
 #results {
 	width: 800px;
