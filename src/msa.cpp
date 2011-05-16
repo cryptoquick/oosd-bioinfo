@@ -328,3 +328,47 @@ string MSA::printTree() {
 	return output;
 }
 
+
+string MSA::fetchSeqString(C_Node* n) {
+	string output = "";
+	int key = n->getKey();
+	for(unsigned int i = 0; i < seqs[key].size(); i++)
+		output += seqs[key][i];
+	return output;
+}
+
+
+string MSA::buildTreeString() {
+	string output = "(";
+	C_Node* r = tree->getRoot();
+	for(unsigned int i = 0; i < r->children.size(); i++)
+		output += buildTreeString(r->children[i]);
+	output += ");";
+	return output;
+}
+
+
+string MSA::buildTreeString(C_Node* n) {
+	string output = "(";
+	// Go left
+	if(n->children[0]->children.size() == 0) {
+		output += fetchSeqString(n->children[0]);
+		output += ", ";
+	}
+	else
+		output += buildTreeString(n->children[0]);
+
+
+	// Go right
+	if(n->children[1]->children.size() == 0) {
+		output += fetchSeqString(n->children[1]);
+		output += "), ";
+	}
+	else {
+		output += buildTreeString(n->children[1]);
+		output += ") ";
+	}
+
+	return output;
+}
+
