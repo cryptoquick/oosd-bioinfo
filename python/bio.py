@@ -67,26 +67,7 @@ class Bioinformatics:
 			
 	def newick(self):
 		# FAKE FAKE NEWICK (so fake!)
-		output = ''
-		tree = self.results['tree']
-		tlines = tree.split('\n')
-		
-		output += '('
-		
-		output += '('
-		taxa = tlines[0].split(' ')
-		for taxon in taxa[:-1]:
-			output += str(taxon) + ":0.15" + ','
-		output = output[:-1]
-		output += '):'
-		
-		taxa = tlines[1].split(' ')
-		for taxon in taxa[:-1]:
-			output += str(taxon) + ":0.35" + ','
-		output = output[:-1]
-		output += ')'
-			
-		self.new = output + ':0.2;'
+		self.new = self.results["tree"]
 	#	Know thy enemy:
 	#	S3 S-1 S-1 
 	#	S5 S0 S1 S-1 to:

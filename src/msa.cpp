@@ -334,15 +334,22 @@ string MSA::fetchSeqString(C_Node* n) {
 	int key = n->getKey();
 	for(unsigned int i = 0; i < seqs[key].size(); i++)
 		output += seqs[key][i];
+//	cout << output;
 	return output;
 }
 
 
-string MSA::buildTreeString() {
+string MSA::buildTreeStringInit() {
 	string output = "(";
 	C_Node* r = tree->getRoot();
-	for(unsigned int i = 0; i < r->children.size(); i++)
-		output += buildTreeString(r->children[i]);
+	for(unsigned int i = 0; i < r->children.size(); i++) {
+		if(r->children[i]->children.size() != 0)
+			output += buildTreeString(r->children[i]);
+		else
+			output += fetchSeqString(r->children[i]);
+			if(i != (r->children.size() - 1))
+				output += ", ";
+	}
 	output += ");";
 	return output;
 }

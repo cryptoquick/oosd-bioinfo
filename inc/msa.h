@@ -50,7 +50,7 @@ public:
 	string printTree();
 	void align();
 	
-	string buildTreeString();
+	string buildTreeStringInit();
 	string fetchSeqString(C_Node* n);
 	string buildTreeString(C_Node* n);
 };
