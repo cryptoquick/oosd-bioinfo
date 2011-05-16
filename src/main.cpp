@@ -66,7 +66,9 @@ int main(int argc, char* argv[])
 				
 				msa->align();
 				seqArr = msa->printSeqs();
-				tree = json::String(msa->printTree());
+			//	tree = json::String(msa->printTree());
+			//	cout << msa->buildTreeString();
+				tree = json::String(msa->buildTreeString());
 				
 				jsobj["alignments"] = seqArr;
 				jsobj["tree"] = tree;

@@ -67,11 +67,10 @@ def msa():
 	if len(seqs) <= 6:
 		[bio.addseq(s) for s in seqs]
 		bio.msa()
-		bio.newick()
 		items = zip(bio.results['alignments'], bio.name)
 		return render_template('msa.html',
 			items = items,
-			tree = bio.new)
+			tree = bio.results['tree'])
 	else:
 		return "Too many sequences!"
 	
@@ -80,4 +79,3 @@ if __name__ == "__main__":
 	app.debug = True
 	app.run()
 
-db.close()
