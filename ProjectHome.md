@@ -1,0 +1,1 @@
+At Metro State College of Denver, Ivo Georgiev, our professor, has asked our class to write a bioinformatics program. This repository is for the team consisting of Alex T., Luke H., and Andrew L.
